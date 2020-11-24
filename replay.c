@@ -5,6 +5,11 @@
 
 #include "./include/dungeon.h"
 
+// TODO : Add main menu / screen selection
+// TODO : Add dungeon
+// TODO : Add shop screen maybe
+
+
 int makeCharacter();
 
 
