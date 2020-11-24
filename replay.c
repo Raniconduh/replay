@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include "./include/dungeon.h"
+
 int makeCharacter();
 
 
@@ -50,6 +52,7 @@ playerCharacter character;
 
 int main() {
 	makeCharacter();
+	test();
 	return 0;
 }
 
