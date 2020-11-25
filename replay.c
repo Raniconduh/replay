@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "./include/dungeon.h"
+// #include "./include/dungeon.h"
 
 // TODO : Add main menu / screen selection
 // TODO : Add dungeon
@@ -11,6 +11,7 @@
 
 
 int makeCharacter();
+int mainMenu();
 
 
 const char RESET[] = "\033[0;0m";
@@ -41,7 +42,7 @@ const char* enemies[] = {"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
 // All sizes that enemies can be (WIP)
 // char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 
-// character class (warrior, mage, or archer)
+// character information (name, class, health, attack, coins)
 typedef struct {
 	char * name;
 	char * class;
@@ -57,7 +58,32 @@ playerCharacter character;
 
 int main() {
 	makeCharacter();
-	test();
+
+	character.coins = 25;
+
+	mainMenu();
+	return 0;
+}
+
+
+int mainMenu() {
+	// Header
+	printf("%s%sMenu\t%s%s%s the %s%s%s\n", 
+			CLEAR, GREEN, 
+			YELLOW, character.name, PURPLE, 
+			YELLOW, character.class, RESET);
+	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+			YELLOW, character.coins, PURPLE,
+			YELLOW, character.health, character.totalHealth, PURPLE, 
+			RESET);
+
+	// Options
+	printf("  %s1. Enter Dungeon\n", CYAN);
+	printf("  2. Enter Shop%s\n\n", RESET);
+
+	printf("%s>>>%s ", YELLOW, RESET);
+	char * userInput = malloc(3);
+	scanf("%s", userInput);
 	return 0;
 }
 
@@ -118,9 +144,14 @@ int makeCharacter() {
 
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
 		printf("%sOk. Retrying%s", RED, RESET);
+		
+		free(userInput);
+
 		sleep(1);
 		makeCharacter();
 	}
+	
+	free(userInput);
 
 	return 0;
 }
