@@ -120,7 +120,16 @@ int makeCharacter() {
 	// user enters their username
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sEnter your name:%s ", PURPLE, RESET);
-	scanf("%s", character.name);	
+	scanf("%s", character.name);
+	
+	// if user enters name thats too long
+	if (strlen(character.name) > 19) {
+	    printf("%s%sError: name too long. Retrying...%s\n", 
+		    CLEAR, RED, RESET);
+	    fflush(stdin);
+	    sleep(1);
+	    makeCharacter();
+	}
 
 	fflush(stdin);
 
@@ -177,7 +186,7 @@ int makeCharacter() {
 
 	// If user enters the wrong thing and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
-		printf("%sOk. Retrying%s", RED, RESET);
+		printf("%s%sOk. Retrying%s\n", CLEAR, RED, RESET);
 
 		sleep(1);
 		makeCharacter();
