@@ -44,11 +44,15 @@ const char* enemies[] = {"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
 
 // character information (name, class, health, attack, coins)
 typedef struct {
+	// user chosen username
 	char * name;
+	// user chosen class (Warrior, Mage, or Archer)
 	char * class;
 	
+	// Available health if healthbar was full (does not change)
 	size_t totalHealth;
 
+	// Current health (does change)
 	size_t health;
 	size_t attackDamage;
 	size_t coins;
@@ -81,6 +85,7 @@ int mainMenu() {
 	printf("  %s1. Enter Dungeon\n", CYAN);
 	printf("  2. Enter Shop%s\n\n", RESET);
 
+	// User input line
 	printf("%s>>>%s ", YELLOW, RESET);
 	char * userInput = malloc(3);
 	scanf("%s", userInput);
@@ -89,16 +94,20 @@ int mainMenu() {
 
 
 int makeCharacter() {
+	// INITIALIZE POINTERS
 	character.name = malloc(20);
 	character.class = malloc(10);
 
 	char * userInput = malloc(10);
 
-	// user enters their name
+	// user enters their username
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sEnter your name:%s ", PURPLE, RESET);
 	scanf("%s", character.name);	
 
+	fflush(stdin);
+
+	// User chooses a class (Warrior, Mage, or Archer)
 	printf("%s", CLEAR);
 	printf("%sWelcome to Replay%s\n", GREEN, RESET);
 	printf("%sPick Your class:%s\n\n", PURPLE, RESET);
@@ -110,7 +119,9 @@ int makeCharacter() {
 	printf("%s>>>%s ", YELLOW, RESET);
 	
 	scanf("%s", userInput);
+	fflush(stdin);
 
+	// Compare user input with all available options
 	if (!strcmp(userInput, "1")) {
 		character.class = "Warrior";
 		character.health = 100;
@@ -130,22 +141,24 @@ int makeCharacter() {
 		character.attackDamage = 15;
 
 	} else {
-		printf("%s%sError: Invalid input. Retrying...\n%s", CLEAR, RED, RESET);
+		printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 		sleep(1);
 		makeCharacter();
 	}
 	
+	// Asks for confirmation on user choices of class and username
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sYou are %s%s%s the %s%s%s\n", 
 			PURPLE, YELLOW, character.name, PURPLE, YELLOW, character.class, RESET);
 	printf("%sIs that correct?%s\n", PURPLE, RESET);
 	printf("%s[Y/n]:%s ", YELLOW, RESET);
 	scanf("%s", userInput);
+	
+	fflush(stdin);
 
+	// If user enters the wrong thing and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
 		printf("%sOk. Retrying%s", RED, RESET);
-		
-		free(userInput);
 
 		sleep(1);
 		makeCharacter();
