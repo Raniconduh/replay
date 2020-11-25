@@ -69,12 +69,12 @@ int main() {
 
 
 int dungeon() {
-
+    return 0;
 }
 
 
 int shop() {
-
+    return 0;
 }
 
 
