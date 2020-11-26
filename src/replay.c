@@ -7,6 +7,7 @@
 // #include "dungeon.h"
 
 // TODO : Add dungeon
+// * add interactivity
 // TODO : Add shop screen maybe
 
 
@@ -16,6 +17,7 @@ int dungeon();
 int shop();
 
 
+const char CLRLINE[] = "\033[2K\r";
 const char RESET[] = "\033[0;0m";
 const char BLACK[] = "\033[0;30m";
 const char RED[] = "\033[0;31m";
@@ -81,6 +83,7 @@ int dungeon() {
 		size_t health;
 		size_t minHealth;
 		size_t maxHealth;
+		size_t totalHealth;
 		
 		size_t damage;
 		size_t minDamage;
@@ -98,6 +101,8 @@ int dungeon() {
 	enemy.maxDamage = 15;
 
 	enemy.health = (rand() % (enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
+	enemy.totalHealth = enemy.health;
+
 	enemy.damage = (rand() % (enemy.maxDamage - enemy.minDamage + 1)) + enemy.minDamage;
 
 	enemy.name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
@@ -117,23 +122,30 @@ int dungeon() {
 			enemy.name[0] == 'O' || 
 			enemy.name[0] == 'U') {
 
-		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Damage%s",
+		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
-	} else{
-		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Damage%s",
+	} else {
+		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
-
 	}
 
 	fflush(stdout);
+
+	sleep(3);
+
+	printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n", 
+			CLRLINE, YELLOW, enemy.name, 
+			enemy.health, enemy.totalHealth, PURPLE,
+			YELLOW, enemy.damage, PURPLE, 
+			RESET);
 
 	return 0;
 }
