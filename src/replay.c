@@ -186,7 +186,7 @@ int makeCharacter() {
 
 	// If user enters the wrong thing and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
-		printf("%s%sOk. Retrying%s\n", CLEAR, RED, RESET);
+		printf("%s%sOk. Retrying...%s\n", CLEAR, RED, RESET);
 
 		sleep(1);
 		makeCharacter();
