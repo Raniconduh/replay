@@ -2,8 +2,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 
-// #include "./include/dungeon.h"
+// #include "dungeon.h"
 
 // TODO : Add dungeon
 // TODO : Add shop screen maybe
@@ -40,6 +41,12 @@ const char HWHITE[] = "\033[0;47m";
 // All sizes that enemies can be (WIP)
 // char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 
+char * enemies[] = {
+	"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
+	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", "Warlock",
+	"Ant Colony", "Necromancer", "Centipede"
+};
+
 // character information (name, class, health, attack, coins)
 typedef struct {
 	// user chosen username
@@ -69,7 +76,66 @@ int main() {
 
 
 int dungeon() {
-    return 0;
+	srand(time(NULL));
+	typedef struct {
+		size_t health;
+		size_t minHealth;
+		size_t maxHealth;
+		
+		size_t damage;
+		size_t minDamage;
+		size_t maxDamage;
+
+		char * name;
+	} badGuy;
+
+	badGuy enemy;
+
+	enemy.minHealth = 10;
+	enemy.maxHealth = 50;
+
+	enemy.minDamage = 5;
+	enemy.maxDamage = 15;
+
+	enemy.health = (rand() % (enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
+	enemy.damage = (rand() % (enemy.maxDamage - enemy.minDamage + 1)) + enemy.minDamage;
+
+	enemy.name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
+
+    printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
+			CLEAR, GREEN,
+			YELLOW, character.name, PURPLE,
+			YELLOW, character.class, RESET);
+	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+			YELLOW, character.coins, PURPLE,
+			YELLOW, character.health, character.totalHealth, PURPLE,
+			RESET);
+
+	if (enemy.name[0] == 'A' ||
+			enemy.name[0] == 'E' || 
+			enemy.name[0] == 'I' || 
+			enemy.name[0] == 'O' || 
+			enemy.name[0] == 'U') {
+
+		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Damage%s",
+				PURPLE,
+				YELLOW, enemy.name, PURPLE,
+				YELLOW, enemy.health, PURPLE,
+				YELLOW, enemy.damage, PURPLE,
+				RESET);
+	} else{
+		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Damage%s",
+				PURPLE,
+				YELLOW, enemy.name, PURPLE,
+				YELLOW, enemy.health, PURPLE,
+				YELLOW, enemy.damage, PURPLE,
+				RESET);
+
+	}
+
+	fflush(stdout);
+
+	return 0;
 }
 
 
