@@ -1,2 +1,2 @@
-replay: src/replay.c src/dungeon.c
-	gcc -o src/replay src/replay.c src/dungeon.c
+replay: src/replay.c
+	gcc -o src/replay src/replay.c
