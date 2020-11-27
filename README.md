@@ -2,8 +2,7 @@
 
 A command line RPG
 
-## TODO
-### Ranked by Priotity
+## TODO - Ranked by Priotity
 
 1. Create Shop Menu
 2. Add an Inventory
