@@ -78,6 +78,12 @@ int main() {
 }
 
 
+int shop() {
+
+	return 0;
+}
+
+
 int dungeon() {
 	size_t damageDeviation[] = {-2, -2, -1, -1, 0, 1, 1, 2, 2};
 	char * userInput = malloc(3);
@@ -225,10 +231,24 @@ input:
 		fflush(stdout);
 		sleep(1);
 
+		// If enemy is defeated
 		if ((long long)enemy.health < 1) {
+			int minCoins = 5;
+			int maxCoins = 15;
+			// Amount of coins earned after battle
+			int awardedCoins = (rand() % (maxCoins - minCoins)) + minCoins;
+			character.coins += awardedCoins;
+
 			printf("%s%sYou defeated the enemy.%s\n", CLEAR, PURPLE, RESET);
-			fflush(stdout);
 			sleep(1);
+			
+			printf("%sYou have been awarded %s%d%s Coins.%s\n", 
+					PURPLE,
+					YELLOW, awardedCoins, PURPLE,
+					RESET);
+			
+			fflush(stdout);
+			sleep(2);
 			break;
 		}
 
@@ -264,11 +284,6 @@ input:
 	}
 
 	return 0;
-}
-
-
-int shop() {
-    return 0;
 }
 
 
