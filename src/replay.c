@@ -8,6 +8,7 @@
 
 // TODO : Add dungeon
 // * add interactivity
+
 // TODO : Add shop screen maybe
 
 
@@ -45,8 +46,8 @@ const char HWHITE[] = "\033[0;47m";
 
 char * enemies[] = {
 	"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
-	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", "Warlock",
-	"Ant Colony", "Necromancer", "Centipede"
+	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", 
+	"Warlock", "Ant Colony", "Necromancer", "Centipede"
 };
 
 // character information (name, class, health, attack, coins)
@@ -61,7 +62,7 @@ typedef struct {
 
 	// Current health (does change)
 	size_t health;
-	size_t attackDamage;
+	size_t damage;
 	size_t coins;
 } playerCharacter;
 playerCharacter character;
@@ -78,28 +79,44 @@ int main() {
 
 
 int dungeon() {
+	size_t damageDeviation[] = {-2, -2, -1, -1, 0, 1, 1, 2, 2};
+	char * userInput = malloc(3);
+
 	srand(time(NULL));
 	typedef struct {
 		size_t health;
+
+		// Minimum possible health (changes in future versions)
 		size_t minHealth;
-		size_t maxHealth;
-		size_t totalHealth;
 		
+		// Maximum possible health (changes in future versions)
+		size_t maxHealth;
+		
+		// The amount of health if none is lost
+		size_t totalHealth;
+
+
 		size_t damage;
+
+		// Minimum possible damage
 		size_t minDamage;
+		
+		// Maximum possible damage
 		size_t maxDamage;
+
 
 		char * name;
 	} badGuy;
-
 	badGuy enemy;
 
+	// should change based on enemy size
 	enemy.minHealth = 10;
 	enemy.maxHealth = 50;
 
 	enemy.minDamage = 5;
 	enemy.maxDamage = 15;
 
+	// random in range: (rand() % (max - min + 1)) + min
 	enemy.health = (rand() % (enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
 	enemy.totalHealth = enemy.health;
 
@@ -116,6 +133,7 @@ int dungeon() {
 			YELLOW, character.health, character.totalHealth, PURPLE,
 			RESET);
 
+	// If enemy name begins with a vowel use 'an' instead of 'a'
 	if (enemy.name[0] == 'A' ||
 			enemy.name[0] == 'E' || 
 			enemy.name[0] == 'I' || 
@@ -141,11 +159,109 @@ int dungeon() {
 
 	sleep(3);
 
-	printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n", 
-			CLRLINE, YELLOW, enemy.name, 
-			enemy.health, enemy.totalHealth, PURPLE,
-			YELLOW, enemy.damage, PURPLE, 
-			RESET);
+	while ((long long)character.health > 0 && (long long)enemy.health > 0) {
+input:
+		printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
+				CLEAR, GREEN,
+				YELLOW, character.name, PURPLE,
+				YELLOW, character.class, RESET);
+		printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+				YELLOW, character.coins, PURPLE,
+				YELLOW, character.health, character.totalHealth, PURPLE,
+				RESET);
+
+		// Clear line and write over it with enemy stats
+		printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n", 
+				CLRLINE, YELLOW, enemy.name, 
+				enemy.health, enemy.totalHealth, PURPLE,
+				YELLOW, enemy.damage, PURPLE, 
+				RESET);
+
+		// Scan for user input
+		printf("%s  1. Attack%s\n\n", CYAN, RESET);
+		printf("%s>>>%s ", YELLOW, RESET);
+
+		scanf("%s", userInput);
+		fflush(stdin);
+
+		// User turn and User enter attack
+		if (!strncmp(userInput, "1", 1)) {
+			// User damage deviation value
+			size_t attackChance = rand() % 
+				(sizeof(damageDeviation) / sizeof(damageDeviation[0]));
+
+			// Damage dealt by user + deviation value
+			size_t totalDamage = character.damage + attackChance;
+
+			// If deviation value is 0, turn is missed
+			if (attackChance == 0) {
+				printf("%s%sYou %smissed%s the enemy!%s\n", 
+						CLEAR, PURPLE, 
+						YELLOW, PURPLE, 
+						RESET);
+
+			// Deviation value of 2, user deals critical damage
+			} else if (attackChance == 2) {
+				enemy.health -= totalDamage;
+				printf("%s%sCritical!%s You attacked for %s%ld%s Damage.%s\n", 
+						CLEAR, YELLOW, 
+						PURPLE, 
+						YELLOW, totalDamage, PURPLE,
+						RESET);
+
+			// Normal damage is dealt (deviation is not 2 nor 0)
+			} else {
+				enemy.health -= totalDamage;
+				printf("%s%sYou attacked for %s%ld%s Damage.%s\n", 
+						CLEAR, PURPLE,
+						YELLOW, totalDamage, PURPLE,
+						RESET);
+			}
+		} else {
+			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
+			sleep(1);
+			goto input;
+		}
+		fflush(stdout);
+		sleep(1);
+
+		if ((long long)enemy.health < 1) {
+			printf("%s%sYou defeated the enemy.%s\n", CLEAR, PURPLE, RESET);
+			fflush(stdout);
+			sleep(1);
+			break;
+		}
+
+		// Enemy turn
+		size_t attackChance = rand() % 
+				(sizeof(damageDeviation) / sizeof(damageDeviation[0]));
+		size_t totalDamage = enemy.damage + attackChance;
+
+		// If deviation is 0, user dodged enemy
+		if (attackChance == 0) {
+			printf("%sYou %sdodged%s the enemy!%s\n", PURPLE, 
+					YELLOW, PURPLE,
+					RESET);
+
+		// if deviation is 2, enemy deals critical damage to the user
+		} else if (attackChance == 2) {
+			character.health -= totalDamage;
+			printf("%sCritical! The enemy dealt %s%ld%s Damage to You.%s\n", 
+					RED, 
+					YELLOW, totalDamage, RED,
+					RESET);
+		
+		// if deviation is not 2 nor 0
+		} else {
+			character.health -= totalDamage;
+			printf("%sThe enemy dealt %s%ld%s Damage to you.%s\n", 
+					RED, YELLOW, totalDamage, RED,
+				   	RESET);
+		}
+		fflush(stdout);
+		sleep(2);
+
+	}
 
 	return 0;
 }
@@ -157,31 +273,42 @@ int shop() {
 
 
 int mainMenu() {
-	// Header
-	printf("%s%sMenu\t%s%s%s the %s%s%s\n",
-			CLEAR, GREEN, 
-			YELLOW, character.name, PURPLE, 
-			YELLOW, character.class, RESET);
-	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-			YELLOW, character.coins, PURPLE,
-			YELLOW, character.health, character.totalHealth, PURPLE, 
-			RESET);
+	while (1) {
+		// Header
+		printf("%s%sMenu\t%s%s%s the %s%s%s\n",
+				CLEAR, GREEN, 
+				YELLOW, character.name, PURPLE, 
+				YELLOW, character.class, RESET);
+		printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+				YELLOW, character.coins, PURPLE,
+				YELLOW, character.health, character.totalHealth, PURPLE, 
+				RESET);
 
-	// Options
-	printf("  %s1. Enter Dungeon\n", CYAN);
-	printf("  2. Enter Shop%s\n\n", RESET);
+		// Options
+		printf("  %s1. Enter Dungeon\n", CYAN);
+		printf("  2. Enter Shop%s\n\n", RESET);
 
-	// User input line
-	printf("%s>>>%s ", YELLOW, RESET);
-	char * userInput = malloc(3);
-	scanf("%s", userInput);
+		// User input line
+		printf("%s>>>%s ", YELLOW, RESET);
+		char * userInput = malloc(3);
+		scanf("%s", userInput);
 
-	if (!strncmp(userInput, "1", 1)) {
-		dungeon();
-	} else if (!strncmp(userInput, "2", 1)) {
-		shop();
-	} else {
-	
+		if (!strncmp(userInput, "1", 1)) {
+			free(userInput);
+
+			dungeon();
+		} else if (!strncmp(userInput, "2", 1)) {
+			free(userInput);
+
+			shop();
+		} else {
+			free(userInput);
+			printf("%s%sError: Invalid Input. Retrying...%s\n", CLEAR, RED, RESET);
+			sleep(1);
+
+			mainMenu();
+		}
+	free(userInput);
 	}
 
 	return 0;
@@ -230,19 +357,19 @@ int makeCharacter() {
 		character.class = "Warrior";
 		character.health = 100;
 		character.totalHealth = 100;
-		character.attackDamage = 15;
+		character.damage = 15;
 
 	} else if (!strcmp(userInput, "2")) {
 		character.class = "Mage";
 		character.health = 50;
 		character.totalHealth = 50;
-		character.attackDamage = 20;
+		character.damage = 20;
 
 	} else if (!strcmp(userInput, "3")) {
 		character.class = "Archer";
 		character.health = 75;
 		character.totalHealth = 75;
-		character.attackDamage = 15;
+		character.damage = 15;
 
 	} else {
 		printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
