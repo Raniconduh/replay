@@ -6,9 +6,8 @@
 
 // #include "dungeon.h"
 
-// TODO : Add dungeon
-// * add interactivity
 
+// TODO : Add inventory
 // TODO : Add shop screen maybe
 
 
@@ -67,6 +66,8 @@ typedef struct {
 } playerCharacter;
 playerCharacter character;
 
+char * inventoryOptions[] = {"Health Potion", "Rotting Flesh"};
+int inventoryCount[] = {0, 0};
 
 int main() {
 	makeCharacter();
