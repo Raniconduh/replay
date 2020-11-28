@@ -66,8 +66,13 @@ typedef struct {
 } playerCharacter;
 playerCharacter character;
 
+
+// Names of possible items
 char * inventoryOptions[] = {"Health Potion", "Rotting Flesh"};
-int inventoryCount[] = {0, 0};
+// Amount of items in inventory 
+// (index corresponds to inventoryOptions)
+size_t inventoryCount[] = {0, 0};
+
 
 int main() {
 	makeCharacter();
