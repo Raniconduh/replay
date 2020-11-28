@@ -154,16 +154,14 @@ int dungeon() {
 			enemy.name[0] == 'O' || 
 			enemy.name[0] == 'U') {
 
-		printf("%sYou have enountered an %s%s%s with 
-				%s%ld%s Health and %s%ld%s Attack Damage%s",
+		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
 	} else {
-		printf("%sYou have enountered a %s%s%s with 
-				%s%ld%s Health and %s%ld%s Attack Damage%s",
+		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
