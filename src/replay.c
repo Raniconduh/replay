@@ -129,10 +129,12 @@ int dungeon() {
 	enemy.maxDamage = 15;
 
 	// random in range: (rand() % (max - min + 1)) + min
-	enemy.health = (rand() % (enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
+	enemy.health = (rand() % (
+				enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
 	enemy.totalHealth = enemy.health;
 
-	enemy.damage = (rand() % (enemy.maxDamage - enemy.minDamage + 1)) + enemy.minDamage;
+	enemy.damage = (rand() % (
+				enemy.maxDamage - enemy.minDamage + 1)) + enemy.minDamage;
 
 	enemy.name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
 
@@ -152,14 +154,16 @@ int dungeon() {
 			enemy.name[0] == 'O' || 
 			enemy.name[0] == 'U') {
 
-		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
+		printf("%sYou have enountered an %s%s%s with 
+				%s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
 	} else {
-		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
+		printf("%sYou have enountered a %s%s%s with 
+				%s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
