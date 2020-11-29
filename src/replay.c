@@ -6,6 +6,7 @@
 
 // #include "dungeon.h"
 
+#define arrlen(array) sizeof(array) / sizeof(array[0])
 
 // TODO : Add inventory
 // TODO : Add shop screen maybe
@@ -15,6 +16,7 @@ int makeCharacter();
 int mainMenu();
 int dungeon();
 int shop();
+int invMenu();
 
 
 const char CLRLINE[] = "\033[2K\r";
@@ -84,8 +86,33 @@ int main() {
 }
 
 
-int shop() {
+int invMenu() {
+	printf("%s%sInventory\t%s%s%s the %s%s%s\n",
+			CLEAR, GREEN,
+			YELLOW, character.name, PURPLE,
+			YELLOW, character.class, RESET);
+	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+			YELLOW, character.coins, PURPLE,
+			YELLOW, character.health, character.totalHealth, PURPLE,
+			RESET);
 
+	for (int i = 0; i < arrlen(inventoryOptions); i++) {
+		printf("%s: ", inventoryOptions[i]);
+		printf("%s%ld%s\n", YELLOW, inventoryCount[i], RESET);
+	}
+
+	printf("\n%sPress Enter to Continue%s\n", YELLOW, RESET);
+
+	while (getchar() != '\n');
+	getchar();
+
+	return 0;
+};
+
+
+int shop() {
+	printf("%sShop\n", CLEAR);
+	exit(17);
 	return 0;
 }
 
@@ -309,7 +336,8 @@ int mainMenu() {
 
 		// Options
 		printf("  %s1. Enter Dungeon\n", CYAN);
-		printf("  2. Enter Shop%s\n\n", RESET);
+		printf("  2. Enter Shop\n");
+		printf("  3. Enter Inventory%s\n\n", RESET);
 
 		// User input line
 		printf("%s>>>%s ", YELLOW, RESET);
@@ -324,14 +352,16 @@ int mainMenu() {
 			free(userInput);
 
 			shop();
+		} else if (!strncmp(userInput, "3", 1)) {
+			free(userInput);
+
+			invMenu();
 		} else {
 			free(userInput);
+
 			printf("%s%sError: Invalid Input. Retrying...%s\n", CLEAR, RED, RESET);
 			sleep(1);
-
-			mainMenu();
 		}
-	free(userInput);
 	}
 
 	return 0;
