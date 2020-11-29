@@ -9,4 +9,5 @@ A command line RPG
 3. Create Shop Menu
 4. Create a Use Item Menu in Dungeon
 5. Add Ability to Gain Items From Battle
+6. Add Different Sized Enemies in Dungeon
 
