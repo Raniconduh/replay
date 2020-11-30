@@ -92,9 +92,10 @@ void printHeader(char * menuName) {
 			CLEAR, GREEN, menuName,
 			YELLOW, character.name, PURPLE,
 			YELLOW, character.class, RESET);
-	printf("%s%ld%s Coins  %s%ld/%ld%s HP%s\n\n",
+	printf("%s%ld%s Coins  %s%ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n",
 			YELLOW, character.coins, PURPLE,
 			YELLOW, character.health, character.totalHealth, PURPLE,
+			YELLOW, character.damage, PURPLE,
 			RESET);
 }
 
