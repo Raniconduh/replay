@@ -476,13 +476,13 @@ int makeCharacter() {
 		character.class = "Mage";
 		character.health = 50;
 		character.totalHealth = 50;
-		character.damage = 20;
+		character.damage = 25;
 
 	} else if (!strcmp(userInput, "3")) {
 		character.class = "Archer";
 		character.health = 75;
 		character.totalHealth = 75;
-		character.damage = 15;
+		character.damage = 20;
 
 	} else {
 		printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
