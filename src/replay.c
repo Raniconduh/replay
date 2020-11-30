@@ -260,7 +260,8 @@ input:
 				RESET);
 
 		// Scan for user input
-		printf("%s  1. Attack%s\n\n", CYAN, RESET);
+		printf("%s  1. Attack\n", CYAN);
+		printf("  2. Use Item%s\n\n", RESET);
 		printf("%s>>>%s ", YELLOW, RESET);
 
 		scanf("%s", userInput);
@@ -299,6 +300,46 @@ input:
 						YELLOW, totalDamage, PURPLE,
 						RESET);
 			}
+		}  else if (!strncmp(userInput, "2", 1)) {
+useItemInput:
+			printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
+					CLEAR, GREEN,
+					YELLOW, character.name, PURPLE,
+					YELLOW, character.class, RESET);
+			printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+					YELLOW, character.coins, PURPLE,
+					YELLOW, character.health, character.totalHealth, PURPLE,
+					RESET);
+
+			printf("%s  1. Health Potion %s%ld%s\n\n",
+					CYAN,
+					YELLOW, inventoryCount[0], RESET);
+			
+			printf("%s>>>%s ", YELLOW, RESET);
+			scanf("%s", userInput);
+
+			if (!strncmp(userInput, "1", 1)) {
+				if (inventoryCount[0] >= 1) {
+					printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
+							CLEAR, PURPLE,
+							YELLOW, PURPLE,
+							RESET);
+					
+					inventoryCount[0]--;
+					character.health += 15;
+					sleep(1);
+				} else {
+					printf("%s%sYou do not have any Health Potions.%s\n",
+							CLEAR, PURPLE,
+							RESET);
+					sleep(1);
+					goto input;
+				}
+			} else {
+				printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
+				sleep(1);
+				goto useItemInput;
+			}
 		} else {
 			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 			sleep(1);
@@ -306,6 +347,7 @@ input:
 		}
 		fflush(stdout);
 		sleep(1);
+
 
 		// If enemy is defeated
 		if ((long long)enemy.health < 1) {
