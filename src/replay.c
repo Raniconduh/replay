@@ -111,8 +111,49 @@ int invMenu() {
 
 
 int shop() {
-	printf("%sShop\n", CLEAR);
-	exit(17);
+	printf("%s%sShop\t%s%s%s the %s%s%s\n", 
+			CLEAR, GREEN,
+			YELLOW, character.name, PURPLE,
+			YELLOW, character.class, RESET);
+	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+			YELLOW, character.coins, PURPLE,
+			YELLOW, character.health, character.totalHealth, PURPLE,
+			RESET);
+	
+	printf("%s  1. Health Potion - 10 Coins%s\n\n", CYAN, RESET);
+
+	printf("%s>>>%s ", YELLOW, RESET);
+
+	char * userInput = malloc(3);
+	scanf("%s", userInput);
+	
+	if (!strncmp(userInput, "1", 1)) {
+		if (character.coins >= 10) {
+			printf("%s%sSuccessfully bought 1 Health Potion.\n", 
+					CLEAR, PURPLE);
+			printf("You have been deducted %s10%s Coins%s\n", 
+					YELLOW, PURPLE, RESET);
+
+			character.coins -= 10;
+			inventoryCount[0]++;
+			
+			sleep(1);
+		} else {
+			printf("%s%sYou do not have enough coins for that.%s\n", 
+					CLEAR, PURPLE, RESET);
+			
+			sleep(1);
+		}
+	} else {
+		printf("%s%sError: Invalid Input. Retrying...%s\n",
+				CLEAR, RED, RESET);
+		
+		sleep(1);
+		shop();
+	}
+
+	free(userInput);
+
 	return 0;
 }
 
