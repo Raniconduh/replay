@@ -285,10 +285,12 @@ input:
 						YELLOW, totalDamage, PURPLE,
 						RESET);
 			}
+		// If use item menu is chosen
 		}  else if (!strncmp(userInput, "2", 1)) {
 useItemInput:
 			printHeader("Dungeon - Use Item");
 
+			// options
 			printf("%s  1. Health Potion %s%ld%s\n\n",
 					CYAN,
 					YELLOW, inventoryCount[0], RESET);
@@ -296,7 +298,9 @@ useItemInput:
 			printf("%s>>>%s ", YELLOW, RESET);
 			scanf("%s", userInput);
 
+			// if option 1 is chosen
 			if (!strncmp(userInput, "1", 1)) {
+				// if item 1 is available in the inventory (greater than 0)
 				if (inventoryCount[0] >= 1) {
 					printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
 							CLEAR, PURPLE,
@@ -306,6 +310,7 @@ useItemInput:
 					inventoryCount[0]--;
 					character.health += 15;
 					sleep(1);
+				// if item 1 is not available in the inventory (less than 1)
 				} else {
 					printf("%s%sYou do not have any Health Potions.%s\n",
 							CLEAR, PURPLE,
