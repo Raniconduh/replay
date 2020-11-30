@@ -11,3 +11,7 @@ A command line RPG
 5. Add Ability to Gain Items From Battle
 6. Add Different Sized Enemies in Dungeon
 
+## Bugs
+1. Quickly spamming a number and enter will lead to automatic menu selections
+2. Leave shop menu open after buying an item
+
