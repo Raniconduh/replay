@@ -17,6 +17,7 @@ int mainMenu();
 int dungeon();
 int shop();
 int invMenu();
+void printHeader(char * menuName);
 
 
 const char CLRLINE[] = "\033[2K\r";
@@ -86,15 +87,20 @@ int main() {
 }
 
 
-int invMenu() {
-	printf("%s%sInventory\t%s%s%s the %s%s%s\n",
-			CLEAR, GREEN,
+void printHeader(char * menuName) {
+	printf("%s%s%s\t%s%s%s the %s%s%s\n",
+			CLEAR, GREEN, menuName,
 			YELLOW, character.name, PURPLE,
 			YELLOW, character.class, RESET);
-	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
+	printf("%s%ld%s Coins  %s%ld/%ld%s HP%s\n\n",
 			YELLOW, character.coins, PURPLE,
 			YELLOW, character.health, character.totalHealth, PURPLE,
 			RESET);
+}
+
+
+int invMenu() {
+	printHeader("Inventory");
 
 	for (int i = 0; i < arrlen(inventoryOptions); i++) {
 		printf("%s: ", inventoryOptions[i]);
