@@ -117,14 +117,7 @@ int invMenu() {
 
 
 int shop() {
-	printf("%s%sShop\t%s%s%s the %s%s%s\n", 
-			CLEAR, GREEN,
-			YELLOW, character.name, PURPLE,
-			YELLOW, character.class, RESET);
-	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-			YELLOW, character.coins, PURPLE,
-			YELLOW, character.health, character.totalHealth, PURPLE,
-			RESET);
+	printHeader("Shop");
 	
 	printf("%s  1. Health Potion - 10 Coins%s\n\n", CYAN, RESET);
 
@@ -212,14 +205,7 @@ int dungeon() {
 
 	enemy.name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
 
-    printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
-			CLEAR, GREEN,
-			YELLOW, character.name, PURPLE,
-			YELLOW, character.class, RESET);
-	printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-			YELLOW, character.coins, PURPLE,
-			YELLOW, character.health, character.totalHealth, PURPLE,
-			RESET);
+    printHeader("Dungeon");
 
 	// If enemy name begins with a vowel use 'an' instead of 'a'
 	if (enemy.name[0] == 'A' ||
@@ -249,14 +235,7 @@ int dungeon() {
 
 	while ((long long)character.health > 0 && (long long)enemy.health > 0) {
 input:
-		printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
-				CLEAR, GREEN,
-				YELLOW, character.name, PURPLE,
-				YELLOW, character.class, RESET);
-		printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-				YELLOW, character.coins, PURPLE,
-				YELLOW, character.health, character.totalHealth, PURPLE,
-				RESET);
+		printHeader("Dungeon");
 
 		// Clear line and write over it with enemy stats
 		printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n",
@@ -308,14 +287,7 @@ input:
 			}
 		}  else if (!strncmp(userInput, "2", 1)) {
 useItemInput:
-			printf("%s%sDungeon\t%s%s%s the %s%s%s\n",
-					CLEAR, GREEN,
-					YELLOW, character.name, PURPLE,
-					YELLOW, character.class, RESET);
-			printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-					YELLOW, character.coins, PURPLE,
-					YELLOW, character.health, character.totalHealth, PURPLE,
-					RESET);
+			printHeader("Dungeon - Use Item");
 
 			printf("%s  1. Health Potion %s%ld%s\n\n",
 					CYAN,
@@ -414,14 +386,7 @@ useItemInput:
 int mainMenu() {
 	while (1) {
 		// Header
-		printf("%s%sMenu\t%s%s%s the %s%s%s\n",
-				CLEAR, GREEN, 
-				YELLOW, character.name, PURPLE, 
-				YELLOW, character.class, RESET);
-		printf("%s%ld%s Coins, %s%ld/%ld%s HP%s\n\n",
-				YELLOW, character.coins, PURPLE,
-				YELLOW, character.health, character.totalHealth, PURPLE, 
-				RESET);
+		printHeader("Menu");
 
 		// Options
 		printf("  %s1. Enter Dungeon\n", CYAN);
