@@ -253,10 +253,10 @@ input:
 				RESET);
 
 		// Clear line and write over it with enemy stats
-		printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n", 
-				CLRLINE, YELLOW, enemy.name, 
+		printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n",
+				CLRLINE, YELLOW, enemy.name,
 				enemy.health, enemy.totalHealth, PURPLE,
-				YELLOW, enemy.damage, PURPLE, 
+				YELLOW, enemy.damage, PURPLE,
 				RESET);
 
 		// Scan for user input
