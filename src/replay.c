@@ -250,7 +250,7 @@ input:
 		printf("%s>>>%s ", YELLOW, RESET);
 
 		scanf("%s", userInput);
-		fflush(stdin);
+		// fflush(stdin);
 
 		// User turn and User enter attack
 		if (!strncmp(userInput, "1", 1)) {
@@ -443,12 +443,12 @@ int makeCharacter() {
 	if (strlen(character.name) > 19) {
 	    printf("%s%sError: name too long. Retrying...%s\n", 
 		    CLEAR, RED, RESET);
-	    fflush(stdin);
+	    // fflush(stdin);
 	    sleep(1);
 	    makeCharacter();
 	}
 
-	fflush(stdin);
+	// fflush(stdin);
 
 	// User chooses a class (Warrior, Mage, or Archer)
 	printf("%s", CLEAR);
@@ -462,7 +462,7 @@ int makeCharacter() {
 	printf("%s>>>%s ", YELLOW, RESET);
 	
 	scanf("%s", userInput);
-	fflush(stdin);
+	// fflush(stdin);
 
 	// Compare user input with all available options
 	if (!strcmp(userInput, "1")) {
@@ -499,7 +499,7 @@ int makeCharacter() {
 	printf("%s[Y/n]:%s ", YELLOW, RESET);
 	scanf("%s", userInput);
 	
-	fflush(stdin);
+	// fflush(stdin);
 
 	// If user enters the wrong thing and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
