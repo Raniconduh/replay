@@ -12,6 +12,7 @@ A command line RPG
 6. <del>Add Exit Options in Menus</del>
 7. Add Ability to Gain Items From Battle
 8. Add Different Sized Enemies in Dungeon
+9. Add option to run away from battle
 
 ## Bugs
 1. Quickly spamming a number and enter will lead to automatic menu selections
