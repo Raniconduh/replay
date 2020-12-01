@@ -121,7 +121,9 @@ int shop() {
 shopLabel:
 	printHeader("Shop");
 	
-	printf("%s  1. Health Potion - 10 Coins%s\n\n", CYAN, RESET);
+	printf("%s  1. Health Potion - %s10%s Coins\n",
+			CYAN, YELLOW, CYAN);
+	printf("  2. Exit%s\n\n", RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
 
@@ -145,6 +147,8 @@ shopLabel:
 			
 			sleep(1);
 		}
+	} else if (!strncmp(userInput, "2", 1)) {
+		return 0;
 	} else {
 		printf("%s%sError: Invalid Input. Retrying...%s\n",
 				CLEAR, RED, RESET);
