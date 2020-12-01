@@ -118,6 +118,7 @@ int invMenu() {
 
 
 int shop() {
+shopLabel:
 	printHeader("Shop");
 	
 	printf("%s  1. Health Potion - 10 Coins%s\n\n", CYAN, RESET);
@@ -153,6 +154,8 @@ int shop() {
 	}
 
 	free(userInput);
+
+	goto shopLabel;
 
 	return 0;
 }
