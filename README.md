@@ -10,9 +10,10 @@ A command line RPG
 4. <del>Create a Use Item Menu in Dungeon</del>
 5. <del>Leave shop menu open after buying an item</del>
 6. <del>Add Exit Options in Menus</del>
-7. Add Ability to Gain Items From Battle
+7. <del>Add Ability to Gain Items From Battle</del>
 8. Add Different Sized Enemies in Dungeon
 9. Add option to run away from battle
+10. Add save files / select save menu
 
 ## Bugs
 1. Quickly spamming a number and enter will lead to automatic menu selections
