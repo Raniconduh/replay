@@ -71,7 +71,7 @@ playerCharacter character;
 
 
 // Names of possible items
-char * inventoryOptions[] = {"Health Potion", "Rotting Flesh"};
+char * inventoryOptions[] = {"Health Potion", "Flesh"};
 // Amount of items in inventory 
 // (index corresponds to inventoryOptions)
 size_t inventoryCount[] = {0, 0};
@@ -347,6 +347,8 @@ useItemInput:
 			// Amount of coins earned after battle
 			int awardedCoins = (rand() % (maxCoins - minCoins)) + minCoins;
 			character.coins += awardedCoins;
+			
+			int gainFlesh = rand() % 5;
 
 			printf("%s%sYou defeated the enemy.%s\n", CLEAR, PURPLE, RESET);
 			sleep(1);
@@ -355,6 +357,14 @@ useItemInput:
 					PURPLE,
 					YELLOW, awardedCoins, PURPLE,
 					RESET);
+			if (gainFlesh == 0 || gainFlesh == 1 || gainFlesh == 2) {
+				sleep(1);
+
+				printf("%sYou have also gained %s1%s Flesh%s\n",
+						PURPLE, YELLOW, PURPLE, RESET);
+				
+				inventoryCount[1]++;
+			}
 			
 			fflush(stdout);
 			sleep(2);
