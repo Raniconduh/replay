@@ -4,12 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-// #include "dungeon.h"
 
 #define arrlen(array) sizeof(array) / sizeof(array[0])
-
-// TODO : Add inventory
-// TODO : Add shop screen maybe
 
 
 int makeCharacter();
@@ -41,11 +37,11 @@ const char HPURPLE[] = "\033[0;45m";
 const char HCYAN[] = "\033[0;46m";
 const char HWHITE[] = "\033[0;47m";
 
-// All enemies available to fight
 
 // All sizes that enemies can be (WIP)
 // char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 
+// All enemies available to fight
 char * enemies[] = {
 	"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
 	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", 
@@ -359,7 +355,6 @@ input:
 		printf("%s>>>%s ", YELLOW, RESET);
 
 		scanf("%s", userInput);
-		// fflush(stdin);
 
 		// User turn and User enter attack
 		if (!strncmp(userInput, "1", 1)) {
@@ -562,12 +557,10 @@ int makeCharacter() {
 	if (strlen(character.name) > 19) {
 	    printf("%s%sError: name too long. Retrying...%s\n", 
 		    CLEAR, RED, RESET);
-	    // fflush(stdin);
+
 	    sleep(1);
 	    makeCharacter();
 	}
-
-	// fflush(stdin);
 
 	// User chooses a class (Warrior, Mage, or Archer)
 	printf("%s", CLEAR);
@@ -581,7 +574,6 @@ int makeCharacter() {
 	printf("%s>>>%s ", YELLOW, RESET);
 	
 	scanf("%s", userInput);
-	// fflush(stdin);
 
 	// Compare user input with all available options
 	if (!strcmp(userInput, "1")) {
@@ -617,8 +609,7 @@ int makeCharacter() {
 	printf("%sIs that correct?%s\n", PURPLE, RESET);
 	printf("%s[Y/n]:%s ", YELLOW, RESET);
 	scanf("%s", userInput);
-	
-	// fflush(stdin);
+
 
 	// If user enters the wrong thing and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
