@@ -7,6 +7,8 @@
 
 #define arrlen(array) sizeof(array) / sizeof(array[0])
 
+// TODO : Add different sized enemies in battle
+
 
 int makeCharacter();
 int mainMenu();
@@ -39,7 +41,7 @@ const char HWHITE[] = "\033[0;47m";
 
 
 // All sizes that enemies can be (WIP)
-// char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
+char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 
 // All enemies available to fight
 char * enemies[] = {
@@ -290,15 +292,50 @@ int dungeon() {
 
 
 		char * name;
+		char * size;
 	} badGuy;
 	badGuy enemy;
 
-	// should change based on enemy size
-	enemy.minHealth = 10;
-	enemy.maxHealth = 50;
+	// all enemy sizes: Tiny, Small, Normal Sized, Large, Enormously Big
+	enemy.size = sizes[rand() % arrlen(sizes)];
 
-	enemy.minDamage = 5;
-	enemy.maxDamage = 15;
+	if (!strcmp(enemy.size, "Tiny")) {
+		enemy.minHealth = 5;
+		enemy.maxHealth = 15;
+
+		enemy.minDamage = 5;
+		enemy.maxDamage = 10;
+
+	} else if (!strcmp(enemy.size, "Small")) {
+		enemy.minHealth = 10;
+		enemy.maxHealth = 25;
+		
+		enemy.minDamage = 10;
+		enemy.maxDamage = 20;
+
+	} else if (!strcmp(enemy.size, "Normal Sized")) {
+		enemy.minHealth = 20;
+		enemy.maxHealth = 35;
+
+		enemy.minDamage = 15;
+		enemy.maxDamage = 25;
+		
+	} else if (!strcmp(enemy.size, "Large")) {
+		enemy.minHealth = 30;
+		enemy.maxHealth = 45;
+		
+		enemy.minDamage = 20;
+		enemy.maxDamage = 35;
+
+	// Enormously big
+	} else {
+		enemy.minHealth = 30;
+		enemy.maxHealth = 50;
+
+		enemy.minDamage = 35;
+		enemy.maxDamage = 45;
+
+	}
 
 	// random in range: (rand() % (max - min + 1)) + min
 	enemy.health = (rand() % (
@@ -313,22 +350,17 @@ int dungeon() {
     printHeader("Dungeon");
 
 	// If enemy name begins with a vowel use 'an' instead of 'a'
-	if (enemy.name[0] == 'A' ||
-			enemy.name[0] == 'E' || 
-			enemy.name[0] == 'I' || 
-			enemy.name[0] == 'O' || 
-			enemy.name[0] == 'U') {
-
-		printf("%sYou have enountered an %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
+	if (!strcmp(enemy.size, "Enormously Big")) {
+		printf("%sYou have enountered an %snormously Big %s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
 				YELLOW, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
 	} else {
-		printf("%sYou have enountered a %s%s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
+		printf("%sYou have enountered a %s%s %s%s with %s%ld%s Health and %s%ld%s Attack Damage%s",
 				PURPLE,
-				YELLOW, enemy.name, PURPLE,
+				YELLOW, enemy.size, enemy.name, PURPLE,
 				YELLOW, enemy.health, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
@@ -343,8 +375,8 @@ input:
 		printHeader("Dungeon");
 
 		// Clear line and write over it with enemy stats
-		printf("%s%s%s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n",
-				CLRLINE, YELLOW, enemy.name,
+		printf("%s%s%s %s  %ld/%ld%s HP  %s%ld%s Attack Damage%s\n\n",
+				CLRLINE, YELLOW, enemy.size, enemy.name,
 				enemy.health, enemy.totalHealth, PURPLE,
 				YELLOW, enemy.damage, PURPLE,
 				RESET);
