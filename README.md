@@ -11,7 +11,7 @@ A command line RPG
 5. <del>Leave shop menu open after buying an item</del>
 6. <del>Add Exit Options in Menus</del>
 7. <del>Add Ability to Gain Items From Battle</del>
-8. Add Different Sized Enemies in Dungeon
+8. <del>Add Different Sized Enemies in Dungeon</del>
 9. Add option to run away from battle
 10. Add save files / select save menu
 
