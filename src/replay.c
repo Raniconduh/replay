@@ -383,7 +383,8 @@ input:
 
 		// Scan for user input
 		printf("%s  1. Attack\n", CYAN);
-		printf("  2. Use Item%s\n\n", RESET);
+		printf("  2. Use Item\n");
+		printf("  3. Run Away%s\n\n", RESET);
 		printf("%s>>>%s ", YELLOW, RESET);
 
 		scanf("%s", userInput);
@@ -427,9 +428,10 @@ useItemInput:
 			printHeader("Dungeon - Use Item");
 
 			// options
-			printf("%s  1. Health Potion %s%ld%s\n\n",
+			printf("%s  1. Health Potion: %s%ld%s\n",
 					CYAN,
 					YELLOW, inventoryCount[0], RESET);
+			printf("%s  2. Exit%s\n\n", CYAN, RESET);
 			
 			printf("%s>>>%s ", YELLOW, RESET);
 			scanf("%s", userInput);
@@ -438,14 +440,21 @@ useItemInput:
 			if (!strncmp(userInput, "1", 1)) {
 				// if item 1 is available in the inventory (greater than 0)
 				if (inventoryCount[0] >= 1) {
-					printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
-							CLEAR, PURPLE,
-							YELLOW, PURPLE,
-							RESET);
-					
-					inventoryCount[0]--;
-					character.health += 15;
-					sleep(1);
+					if (character.health < character.totalHealth - 15) {
+						printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
+								CLEAR, PURPLE,
+								YELLOW, PURPLE,
+								RESET);
+						
+						inventoryCount[0]--;
+						character.health += 15;
+						sleep(1);
+					} else {
+						printf("%s%sYou cannot use this item. Health is too high%s\n",
+						CLEAR, PURPLE, RESET);
+						sleep(1);
+						goto useItemInput;
+					}
 				// if item 1 is not available in the inventory (less than 1)
 				} else {
 					printf("%s%sYou do not have any Health Potions.%s\n",
@@ -454,10 +463,65 @@ useItemInput:
 					sleep(1);
 					goto input;
 				}
+			} else if (!strncmp(userInput, "2", 1)) {
+				goto input;
 			} else {
 				printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 				sleep(1);
 				goto useItemInput;
+			}
+
+		// if runaway option is chosen
+		} else if (!strncmp(userInput, "3", 1)) {
+			// If run away is succesful
+			if (rand() % 3 == 0) {
+				printf("%s%sYou successfully ran away.%s\n",
+						CLEAR, PURPLE, RESET);
+				sleep(1);
+				
+				return 0;
+
+			// if runaway fails
+			} else {
+				// Index 0 is good excuses, index 1 is bad
+				char excuses[2][2][100] = {
+					{
+						"You forgot how to run! Did not escape.",
+						"Your enemy has slowed you. Did not escape."
+					},
+					{
+						"You have been poisoned by your enemy. Did not escape",
+						"You tripped on a sharp rock. Did not escape."
+					}
+				};
+				
+				// good excuse; index 0
+				if (rand() % 2 == 0) {
+					char * excuse = excuses[0][rand() % 2];
+					printf("%s%s%s%s\n",
+							CLEAR, PURPLE, excuse, RESET);
+					sleep(1);
+				// bad excuse; index 1
+				} else {
+					char * excuse = excuses[1][rand() % 2];
+					
+					int minExcuseDamage = 2;
+					int maxExcuseDamage = 6;
+
+					int excuseDamage = (rand() % (maxExcuseDamage - minExcuseDamage + 1)) + minExcuseDamage;
+
+					printf("%s%s%s%s\n",
+							CLEAR, PURPLE, excuse, RESET);
+					sleep(1);
+					printf("%sYou lost %s%d%s Health%s\n",
+							PURPLE,
+							YELLOW, excuseDamage, PURPLE,
+							RESET);
+
+					character.health -= excuseDamage;
+					sleep(1);
+
+				}
 			}
 		} else {
 			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
