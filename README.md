@@ -14,6 +14,8 @@ A command line RPG
 8. <del>Add Different Sized Enemies in Dungeon</del>
 9. <del>Add option to run away from battle</del>
 10. Add save files / select save menu
+	a. Add Ability to Load Save Files
+	b. Add Ability to Create Save Files
 11. Split into multiple files
 
 ## Bugs
