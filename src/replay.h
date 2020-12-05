@@ -21,7 +21,7 @@ typedef struct pc playerCharacter;
 
 int makeCharacter();
 int mainMenu();
-int dungeon();
+int dungeon(playerCharacter * character);
 int shop(playerCharacter * character);
 int invMenu(playerCharacter * character);
 void printHeader(char * menuName);
