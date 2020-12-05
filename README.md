@@ -15,8 +15,11 @@ A command line RPG
 9. <del>Add option to run away from battle</del>
 10. Move big functions into seperate files; break them down
 11. Add save files / select save menu
-a. Add Ability to Load Save Files
-b. Add Ability to Create Save Files
+
+&nbsp;&nbsp; a. Add Ability to Load Save Files
+
+&nbsp;&nbsp; b. Add Ability to Create Save Files
+
 12. Split into multiple files
 
 ## Bugs
