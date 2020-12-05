@@ -13,29 +13,34 @@
 // TODO : add parsing of save data files
 // TODO : add creation of save data files
 
+const char * CLRLINE = "\033[2K\r";
+const char * RESET = "\033[0;0m";
+const char * BLACK = "\033[0;30m";
+const char * RED = "\033[0;31m";
+const char * GREEN = "\033[0;32m";
+const char * YELLOW = "\033[0;33m";
+const char * BLUE = "\033[0;34m";
+const char * PURPLE = "\033[0;35m";
+const char * CYAN = "\033[0;36m";
+const char * CLEAR = "\033[H\033[2J";
 
-int makeCharacter();
-int mainMenu();
-int dungeon();
-int shop();
-void printHeader(char * menuName);
-int startMenu();
 
-/*
+
 char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 char * enemies[] = {
 	"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
 	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", 
 	"Warlock", "Ant Colony", "Necromancer", "Centipede"
 };
-*/
+
 
 // character information (name, class, health, attack, coins)
 playerCharacter character;
 
 // Amount of items in inventory 
+char * inventoryOptions[] = {"Health Potion", "Flesh"};
 // (index corresponds to inventoryOptions)
-// size_t inventoryCount[] = {2, 0};
+size_t inventoryCount[] = {2, 0};
 
 
 int main() {
@@ -155,85 +160,6 @@ void printHeader(char * menuName) {
 			YELLOW, character.damage, PURPLE,
 			RESET);
 }
-
-
-int invMenu() {
-invLabel:
-	printHeader("Inventory");
-
-	for (size_t i = 0; i < arrlen(inventoryOptions); i++) {
-		printf("%s  %ld. %s%s: ", CYAN, i + 1, RESET, inventoryOptions[i]);
-		printf("%s%ld%s\n", YELLOW, inventoryCount[i], RESET);
-	}
-
-	printf("%s  %ld. Exit%s\n\n", CYAN, arrlen(inventoryOptions) + 1, RESET);
-
-	printf("%s>>>%s ", YELLOW, RESET);
-	char * userInput = malloc(3);
-	scanf("%s", userInput);
-
-	char * exitNumber = malloc(arrlen(inventoryCount) * sizeof(int));
-	sprintf(exitNumber, "%ld", arrlen(inventoryCount) + 1);
-
-	printf("%s  %s. Exit%s\n\n", CYAN, exitNumber, RESET);
-
-	// if the exit option is chosen
-	if (!strcmp(userInput, exitNumber)) {
-		return 0;
-
-	// if option 1 is chosen
-	} else if (!strcmp(userInput, "1")) {
-
-		// If there are more than 0 health potions and option 1 is chosen
-		if (inventoryCount[0] > 0)  {
-
-			// If current health is far enough away from max health
-			if (character.health < character.totalHealth - 15) {
-			printf("%s%sYou used %s1%s Health Potion and gained %s15%s Health.%s\n",
-					CLEAR, PURPLE,
-					YELLOW, PURPLE, YELLOW, PURPLE,
-					RESET);
-			
-			inventoryCount[0]--;
-			character.health += 15;
-			
-			sleep(1);
-			
-			// if current health is too close to max health
-			} else {
-				printf("%s%sYou cannot use this item. Health is too high%s\n",
-						CLEAR, PURPLE, RESET);
-				sleep(1);
-
-			}
-
-		// If there are not enough health potions
-		} else {
-			printf("%s%sYou do not have any Health Potions%s\n",
-					CLEAR, PURPLE, RESET);
-			sleep(1);
-		}
-	
-		goto invLabel;
-
-	// If chosen option is not a usable item or does not exist
-	} else {
-		free(userInput);
-		free(exitNumber);
-
-		printf("%s%sYou cannot use this item.%s\n",
-				CLEAR, PURPLE, RESET);
-
-		sleep(1);
-
-		goto invLabel;
-	}
-
-	free(userInput);
-	free(exitNumber);
-
-	return 0;
-};
 
 
 int shop() {
@@ -659,7 +585,7 @@ int mainMenu() {
 		} else if (!strncmp(userInput, "3", 1)) {
 			free(userInput);
 
-			invMenu();
+			invMenu(&character);
 		} else {
 			free(userInput);
 
