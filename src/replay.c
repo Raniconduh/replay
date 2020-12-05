@@ -659,7 +659,7 @@ int mainMenu() {
 		} else if (!strncmp(userInput, "3", 1)) {
 			free(userInput);
 
-			invMenu(&character);
+			invMenu();
 		} else {
 			free(userInput);
 
