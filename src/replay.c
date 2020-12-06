@@ -13,22 +13,24 @@
 // TODO : add creation of save data files
 
 const char * CLRLINE = "\033[2K\r";
-const char * RESET = "\033[0;0m";
-const char * BLACK = "\033[0;30m";
-const char * RED = "\033[0;31m";
-const char * GREEN = "\033[0;32m";
-const char * YELLOW = "\033[0;33m";
-const char * BLUE = "\033[0;34m";
-const char * PURPLE = "\033[0;35m";
-const char * CYAN = "\033[0;36m";
-const char * CLEAR = "\033[H\033[2J";
+const char * RESET   = "\033[0;0m";
+const char * BLACK   = "\033[0;30m";
+const char * RED     = "\033[0;31m";
+const char * GREEN   = "\033[0;32m";
+const char * YELLOW  = "\033[0;33m";
+const char * BLUE    = "\033[0;34m";
+const char * PURPLE  = "\033[0;35m";
+const char * CYAN    = "\033[0;36m";
+const char * CLEAR   = "\033[H\033[2J";
 
 
+char * sizes[] = {
+	"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"
+};
 
-char* sizes[] = {"Tiny", "Small", "Normal Sized", "Large", "Enormously Big"};
 char * enemies[] = {
-	"Witch", "Goblin", "Ogre", "Vampire", "Ghoul", "Wolf",
-	"Mummy", "Zombie", "Ghost", "Troll", "Giant", "Scorpion", 
+	"Witch",   "Goblin",    "Ogre",         "Vampire", "Ghoul", "Wolf",
+	"Mummy",   "Zombie",    "Ghost",        "Troll",   "Giant", "Scorpion", 
 	"Warlock", "Ant Colony", "Necromancer", "Centipede"
 };
 
@@ -84,16 +86,16 @@ int mainMenu() {
 
 		if (!strncmp(userInput, "1", 1)) {
 			free(userInput);
-
 			dungeon(&character);
+
 		} else if (!strncmp(userInput, "2", 1)) {
 			free(userInput);
-
 			shop(&character);
+
 		} else if (!strncmp(userInput, "3", 1)) {
 			free(userInput);
-
 			invMenu(&character);
+
 		} else {
 			free(userInput);
 
