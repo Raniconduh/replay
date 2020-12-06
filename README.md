@@ -13,7 +13,7 @@ A command line RPG
 7. <del>Add Ability to Gain Items From Battle</del>
 8. <del>Add Different Sized Enemies in Dungeon</del>
 9. <del>Add option to run away from battle</del>
-10. Move big functions into seperate files; break them down
+10. <del>Move big functions into seperate files; break them down</del>
 11. Add save files / select save menu
 
 &nbsp;&nbsp; a. Add Ability to Load Save Files
