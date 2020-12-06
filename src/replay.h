@@ -19,7 +19,7 @@ struct pc {
 typedef struct pc playerCharacter;
 
 
-int makeCharacter();
+int makeCharacter(playerCharacter * character);
 int mainMenu();
 int dungeon(playerCharacter * character);
 int shop(playerCharacter * character);
