@@ -5,7 +5,41 @@
 #include <errno.h>
 #include <dirent.h>
 
+#include <libxml/parser.h>
+
 #include "replay.h"
+
+DIR * dir;
+struct dirent * dirContents;
+char ** saveFiles;
+size_t saves;
+
+
+int searchSaves() {
+	// assign dirContents to file being read by readdir()
+	// while the file being read exists
+	while ((dirContents = readdir(dir)) != NULL) {
+		// if file name is not . nor ..
+		if (strcmp(dirContents->d_name, ".") && strcmp(dirContents->d_name, "..")) {
+			// add save file name to saveFiles array at index saves
+			saveFiles[saves] = dirContents->d_name;
+			// increment saves to show number of save files found
+			saves++;
+
+			// reallocate saveFiles to be able to store more saves
+			// cast to void and add 1 to remove compile warning
+			(void)(realloc(saveFiles, sizeof(char) * (saves + 1)) + 1);
+		}
+	}
+
+	if (saves > 0) {
+		return 0;
+	} else {
+		return 1;
+	}
+
+	return 0;
+}
 
 int startMenu() {
 startMenuLabel:
@@ -20,29 +54,19 @@ startMenuLabel:
 
 	// Load an existing save
 	if (!strncmp(userInput, "1", 1)) {
-		char * home = getenv("HOME");
+		// get $HOME environment variable
+		char * home = malloc(sizeof(char *) * strlen(getenv("HOME")));
+		strcpy(home, getenv("HOME"));
 		strcat(home, "/.config/replay");
 
-		DIR * dir = opendir(home);
-		struct dirent * dirContents;
-		size_t saves = 0;
-		char ** saveFiles = malloc(sizeof(char) * saves + 1);
+		dir = opendir(home);
+		saveFiles = malloc(sizeof(char *) * (saves + 1));
+		saves = 0;
 
 		// If directory exists
 		if (dir) {
-			while ((dirContents = readdir(dir)) != NULL) {
-				// storing contents of directory
-
-				// if file name is not . nor ..
-				if (strcmp(dirContents->d_name, ".") && strcmp(dirContents->d_name, "..")) {
-					saveFiles[saves] = dirContents->d_name;
-					saves++;
-					void * ptr = realloc(saveFiles, sizeof(char) * saves + 1);
-				}
-					
-			}
-
-			if (saves == 0) {
+			// If no save files are found
+			if (searchSaves() == 1) {
 				printf("%s%sNo saves found.%s\n", CLEAR, PURPLE, RESET);
 				sleep(1);
 
@@ -53,29 +77,58 @@ startMenuLabel:
 
 			printf("%s%sSelect a Save%s\n\n", CLEAR, GREEN, RESET);
 		
+			// Loop through found save files and display them with
+			// numbered options (e.g.  1. save1  2. save2)
 			size_t i;
 			for (i = 1; i <= saves; i++) {
 				printf("%s  %ld. %s%s\n", CYAN, i, saveFiles[i-1], RESET);
 			}
 
+			// print i with exit option
+			// i will be 1 more than highest save option
 			printf("%s  %ld. Exit%s\n\n", CYAN, i, RESET);
 
 			printf("%s>>>%s ", YELLOW, RESET);
 			scanf("%s", userInput);
 			
+			// convert i to string to compare user input to it
 			char * stringi = malloc(sizeof(i));
 			snprintf(stringi, sizeof(i), "%ld", i);
 
+			// if user chooses exit option
 			if (!strncmp(userInput, stringi, 1)) {
-				home = NULL;
-				dir = NULL;
-				dirContents = NULL;
-				startMenu();
+				free(home);
+				free(stringi);
+				free(saveFiles);
+				closedir(dir);
+
+				goto startMenuLabel;
+			} else {
+				uintmax_t intInput = strtoull(userInput, NULL, 10);
+				// invalid input entered
+				if (intInput == 0) {
+					printf("%s%sError: Invalid Input. Retrying...%s\n",
+							CLEAR, RED, RESET);
+					sleep(1);
+
+					free(home);
+					free(stringi);
+					free(saveFiles);
+					closedir(dir);
+
+					goto startMenuLabel;
+				} else {
+				printf("%sYou entered: %ld\n\n", CLEAR, intInput);
+				sleep(1);
+
+				free(home);
+				free(stringi);
+				free(saveFiles);
+				closedir(dir);
+
+				goto startMenuLabel;
+				}
 			}
-			
-			free(stringi);
-			free(saveFiles);
-			closedir(dir);
 
 		// Directory does not exist
 		} else if (ENOENT == errno) {
