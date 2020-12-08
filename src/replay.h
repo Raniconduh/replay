@@ -25,7 +25,7 @@ int dungeon(playerCharacter * character);
 int shop(playerCharacter * character);
 int invMenu(playerCharacter * character);
 void printHeader(char * menuName);
-int startMenu();
+int startMenu(playerCharacter * character);
 
 extern const char * CLRLINE;
 extern const char * RESET;
