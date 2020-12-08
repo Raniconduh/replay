@@ -9,10 +9,17 @@
 
 #include "replay.h"
 
+// home dir to be opened
 DIR * dir;
+// contents of the home dir;
+// contains more than just file name and is therefore a struct
 struct dirent * dirContents;
+// array of all save files found
 char ** saveFiles;
+// number of saves found
 size_t saves;
+// user input as an int as opposed to string
+uintmax_t intInput;
 
 
 int searchSaves() {
@@ -41,7 +48,39 @@ int searchSaves() {
 	return 0;
 }
 
-int startMenu() {
+
+int loadSave(char * saveName, playerCharacter * character) {
+	// actual saveFile itself
+	xmlDoc * saveFile = NULL;
+	xmlNode *root, *first_child, *node;
+
+	char * file = malloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *));
+	strcpy(file, getenv("HOME"));
+	strcat(file, "/.config/replay/");
+	strcat(file, saveName);
+
+	saveFile = xmlReadFile(file, NULL, 0);
+
+	root = xmlDocGetRootElement(saveFile);
+
+	printf("Root element is: %s, type %i\n", root->name, root->type);
+	first_child = root->children;
+	for (node = first_child; node; node = node->next) {
+		printf("Child is %s, type %i\n", node->name, node->type);
+/*
+		if (!strncmp(node->name, "class")) {
+	
+		}
+*/
+	}
+	exit(0);
+
+	xmlFreeDoc(saveFile);
+	free(file);
+}
+
+
+int startMenu(playerCharacter * character) {
 startMenuLabel:
 	printf("%s%sWelcome to Replay!%s\n\n", CLEAR, GREEN, RESET);
 
@@ -104,9 +143,9 @@ startMenuLabel:
 
 				goto startMenuLabel;
 			} else {
-				uintmax_t intInput = strtoull(userInput, NULL, 10);
+				intInput = strtoull(userInput, NULL, 10);
 				// invalid input entered
-				if (intInput == 0) {
+				if (intInput == 0 || intInput > saves) {
 					printf("%s%sError: Invalid Input. Retrying...%s\n",
 							CLEAR, RED, RESET);
 					sleep(1);
@@ -117,9 +156,9 @@ startMenuLabel:
 					closedir(dir);
 
 					goto startMenuLabel;
-				} else {
-				printf("%sYou entered: %ld\n\n", CLEAR, intInput);
-				sleep(1);
+				} // else {
+
+				loadSave(saveFiles[intInput - 1], character);
 
 				free(home);
 				free(stringi);
@@ -127,7 +166,9 @@ startMenuLabel:
 				closedir(dir);
 
 				goto startMenuLabel;
-				}
+
+				//}
+
 			}
 
 		// Directory does not exist
