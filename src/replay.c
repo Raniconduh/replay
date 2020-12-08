@@ -45,7 +45,7 @@ size_t inventoryCount[] = {2, 0};
 
 
 int main() {
-	startMenu();
+	startMenu(&character);
 
 	makeCharacter(&character);
 
