@@ -45,9 +45,8 @@ size_t inventoryCount[] = {2, 0};
 
 
 int main() {
-	startMenu(&character);
-
-	makeCharacter(&character);
+	if (startMenu(&character))
+		makeCharacter(&character);
 
 	character.coins = 15;
 
