@@ -5,6 +5,10 @@
 
 #include "replay.h"
 
+int makeSave(char * saveName, playerCharacter * character, int overwrite);
+
+
+// inital make character screen (select character stats n stuff)
 int makeCharacter(playerCharacter * character) {
 makeCharacterLabel:
 	// INITIALIZE POINTERS
@@ -76,7 +80,7 @@ makeCharacterLabel:
 	scanf("%s", userInput);
 
 
-	// If user enters the wrong thing and wouuld like to retry
+	// If user enters no and wouuld like to retry
 	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
 		printf("%s%sOk. Retrying...%s\n", CLEAR, RED, RESET);
 
@@ -84,8 +88,76 @@ makeCharacterLabel:
 		goto makeCharacterLabel;
 	}
 	
+saveInputLabel:
+	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
+	printf("%sEnter Save Name (no spaces):%s\n\n", PURPLE, RESET);
+
+	char * saveInput = malloc(sizeof(char) * 20);
+	printf("%s>>>%s ", YELLOW, RESET);
+	scanf("%s", userInput);
+
+	if (strlen(saveInput) > 14) {
+		printf("%s%sError: Save name too long. Retrying...%s\n",
+				CLEAR, RED, RESET);
+		sleep(1);
+		goto saveInputLabel;
+	}
+
+	// if user selected save file already exists
+	if (makeSave(saveInput, character, 1)) {
+		printf("%s%sError: This file already exists.%s\n", CLEAR, RED, RESET);
+		printf("%sWould you like to delete and overwrite the save file?%s\n\n",
+				PURPLE, RESET);
+		
+		printf("%s[Y/n] :%s ", YELLOW, RESET);
+		scanf("%s", userInput);
+
+		if (!strncmp(userInput, "y", 1) || !strncmp(userInput, "Y", 1)) {
+			makeSave(saveInput, character, 0);	
+		} else {
+			goto saveInputLabel;
+		}
+	}
+
+	free(saveInput);
 	free(userInput);
 
 	return 0;
 }
+
+
+// create a save file and write to it
+int makeSave(char * saveName, playerCharacter * character, int overwrite) {
+	char * home = getenv("HOME");
+	char * savePath = calloc((strlen(home) + strlen(saveName) + strlen(".save") + 15) * sizeof(char), 1);
+	strcpy(savePath, home);
+	strcat(savePath, "/.config/replay/");
+	strcat(savePath, saveName);
+	strcat(savePath, ".save");
+	
+	// if save file exists and overwrite is 1 (dont overwrite)
+	if (access(savePath, F_OK) == 0 && overwrite) {
+		return 1;
+	}
+
+	char * toSave = calloc((200 + strlen(character->name)
+				+ strlen(character->class)
+				+ (sizeof(long long) * 2)) * sizeof(char), 1);
+
+	sprintf(toSave, "<?xml version=\"1.0\"?><character><name>%s</name>\
+			<class>%s</class><totalHealth>%ld</totalHealth>\
+			<health>%ld</health><damage>%ld</damage><coins>%ld</coins></character>",
+			character->name, character->class, character->totalHealth,
+			character->health, character->damage, character->coins);
+	
+	FILE * saveFile = fopen(savePath, "w+");
+	fputs(toSave, saveFile);
+	fclose(saveFile);
+	fflush(saveFile);
+	
+	free(toSave);
+	free(savePath);
+	return 0;
+}
+
 
