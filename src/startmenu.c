@@ -210,7 +210,8 @@ startMenuLabel:
 
 	// Make a new save
 	} else if (!strncmp(userInput, "2", 1)) {
-		
+		free(userInput);
+		return 1;
 	}
 
 	free(userInput);
