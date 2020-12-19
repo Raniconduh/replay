@@ -52,31 +52,54 @@ int searchSaves() {
 int loadSave(char * saveName, playerCharacter * character) {
 	// actual saveFile itself
 	xmlDoc * saveFile = NULL;
+	// create nodes necessary for parsing
 	xmlNode *root, *first_child, *node;
+	
+	// save the path of save file into `file` variable
+	char * filePath = malloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *));
+	strcpy(filePath, getenv("HOME"));
+	strcat(filePath, "/.config/replay/");
+	strcat(filePath, saveName);
 
-	char * file = malloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *));
-	strcpy(file, getenv("HOME"));
-	strcat(file, "/.config/replay/");
-	strcat(file, saveName);
-
-	saveFile = xmlReadFile(file, NULL, 0);
+	saveFile = xmlReadFile(filePath, NULL, 0);
 
 	root = xmlDocGetRootElement(saveFile);
 
-	printf("Root element is: %s, type %i\n", root->name, root->type);
+	//printf("Root element is: %s, type %i\n", root->name, root->type);
 	first_child = root->children;
+
+	// go through xml file structure
 	for (node = first_child; node; node = node->next) {
-		printf("Child is %s, type %i\n", node->name, node->type);
-/*
-		if (!strncmp(node->name, "class")) {
-	
-		}
-*/
+		// printf("Child is %s, type %i\n", node->name, node->type);
+
+		if (!strcmp((char *)node->name, "class"))
+			character->class = (char *)xmlNodeGetContent(node);
+
+		else if (!strcmp((char *)node->name, "name"))
+			character->name = (char *)xmlNodeGetContent(node);
+
+		else if (!strcmp((char *)node->name, "totalHealth"))
+			character->totalHealth = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+
+		else if (!strcmp((char *)node->name, "health"))
+			character->health = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+
+		else if (!strcmp((char *)node->name, "damage"))
+			character->damage = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+
+		else if (!strcmp((char *)node->name, "coins"))
+			character->coins = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+
 	}
-	exit(0);
 
 	xmlFreeDoc(saveFile);
-	free(file);
+	free(filePath);
+
+	printf("Character info:\n");
+	printf("name: %s\nclass: %s\ntotHealth: %ld\nhealth: %ld\ndamage: %ld\ncoins: %ld\n",
+			character->name, character->class, character->totalHealth, character->health, character->damage, character->coins);
+
+	exit(0);
 }
 
 
@@ -131,7 +154,7 @@ startMenuLabel:
 			scanf("%s", userInput);
 			
 			// convert i to string to compare user input to it
-			char * stringi = malloc(sizeof(i));
+			char * stringi = malloc(sizeof(i) * sizeof(char));
 			snprintf(stringi, sizeof(i), "%ld", i);
 
 			// if user chooses exit option
