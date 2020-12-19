@@ -79,27 +79,27 @@ int loadSave(char * saveName, playerCharacter * character) {
 			character->name = (char *)xmlNodeGetContent(node);
 
 		else if (!strcmp((char *)node->name, "totalHealth"))
-			character->totalHealth = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+			character->totalHealth = strtoull(
+					(char*)xmlNodeGetContent(node), NULL, 10);
 
 		else if (!strcmp((char *)node->name, "health"))
-			character->health = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+			character->health = strtoull(
+					(char*)xmlNodeGetContent(node), NULL, 10);
 
 		else if (!strcmp((char *)node->name, "damage"))
-			character->damage = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+			character->damage = strtoull(
+					(char*)xmlNodeGetContent(node), NULL, 10);
 
 		else if (!strcmp((char *)node->name, "coins"))
-			character->coins = strtoull((char*)xmlNodeGetContent(node), NULL, 10);
+			character->coins = strtoull(
+					(char*)xmlNodeGetContent(node), NULL, 10);
 
 	}
 
 	xmlFreeDoc(saveFile);
 	free(filePath);
 
-	printf("Character info:\n");
-	printf("name: %s\nclass: %s\ntotHealth: %ld\nhealth: %ld\ndamage: %ld\ncoins: %ld\n",
-			character->name, character->class, character->totalHealth, character->health, character->damage, character->coins);
-
-	exit(0);
+	return 0;
 }
 
 
@@ -181,7 +181,8 @@ startMenuLabel:
 					goto startMenuLabel;
 				} // else {
 
-				loadSave(saveFiles[intInput - 1], character);
+				if (!loadSave(saveFiles[intInput - 1], character))
+					return 0;
 
 				free(home);
 				free(stringi);
