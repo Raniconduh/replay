@@ -76,7 +76,8 @@ int mainMenu() {
 		// Options
 		printf("  %s1. Enter Dungeon\n", CYAN);
 		printf("  2. Enter Shop\n");
-		printf("  3. Enter Inventory%s\n\n", RESET);
+		printf("  3. Enter Inventory\n");
+		printf("  4. Quit Game%s\n\n", RESET);
 
 		// User input line
 		printf("%s>>>%s ", YELLOW, RESET);
@@ -95,10 +96,13 @@ int mainMenu() {
 			free(userInput);
 			invMenu(&character);
 
+		} else if (!strncmp(userInput, "4", 1)) {
+			free(userInput);
+			exit(0);
+
 		} else {
 			free(userInput);
 
-			printf("%s%sError: Invalid Input. Retrying...%s\n", CLEAR, RED, RESET);
 			sleep(1);
 		}
 	}
