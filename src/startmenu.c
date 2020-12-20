@@ -107,7 +107,8 @@ startMenuLabel:
 	printf("%s%sWelcome to Replay!%s\n\n", CLEAR, GREEN, RESET);
 
 	printf("%s  1. Load Save\n", CYAN);
-	printf("  2. Create New Save%s\n\n", RESET);
+	printf("  2. Create New Save\n");
+	printf("  3. Quit Game%s\n\n", RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
 	char * userInput = malloc(sizeof(char) * 5);
@@ -211,6 +212,12 @@ startMenuLabel:
 	} else if (!strncmp(userInput, "2", 1)) {
 		free(userInput);
 		return 1;
+	} else if (!strncmp(userInput, "3", 1)) {
+		free(userInput);
+		exit(0);
+	} else {
+		free(userInput);
+		goto startMenuLabel;
 	}
 
 	free(userInput);
