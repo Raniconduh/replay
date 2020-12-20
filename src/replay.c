@@ -102,8 +102,6 @@ int mainMenu() {
 
 		} else {
 			free(userInput);
-
-			sleep(1);
 		}
 	}
 
