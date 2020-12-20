@@ -64,8 +64,7 @@ input:
 		// User turn and User enter attack
 		if (!strncmp(userInput, "1", 1)) {
 			// User damage deviation value
-			size_t attackChance = rand() % 
-				(sizeof(damageDeviation) / sizeof(damageDeviation[0]));
+			size_t attackChance = damageDeviation[rand() % (arrlen(damageDeviation))];
 
 			// Damage dealt by user + deviation value
 			size_t totalDamage = character->damage + attackChance;
