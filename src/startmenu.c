@@ -34,8 +34,7 @@ int searchSaves() {
 			saves++;
 
 			// reallocate saveFiles to be able to store more saves
-			// cast to void and add 1 to remove compile warning
-			(void)(realloc(saveFiles, sizeof(char) * (saves + 1)) + 1);
+			saveFiles = realloc(saveFiles, sizeof(char *) * (saves + 15));
 		}
 	}
 
@@ -56,7 +55,7 @@ int loadSave(char * saveName, playerCharacter * character) {
 	xmlNode *root, *first_child, *node;
 	
 	// save the path of save file into `file` variable
-	char * filePath = malloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *));
+	char * filePath = calloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *), 1);
 	strcpy(filePath, getenv("HOME"));
 	strcat(filePath, "/.config/replay/");
 	strcat(filePath, saveName);
@@ -111,18 +110,18 @@ startMenuLabel:
 	printf("  2. Create New Save%s\n\n", RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
-	char * userInput = malloc(3);
+	char * userInput = malloc(sizeof(char) * 5);
 	scanf("%s", userInput);
 
 	// Load an existing save
 	if (!strncmp(userInput, "1", 1)) {
 		// get $HOME environment variable
-		char * home = malloc(sizeof(char *) * strlen(getenv("HOME")));
+		char * home = calloc(sizeof(char) * (strlen(getenv("HOME")) + strlen("/.config/replay") + 10), 1);
 		strcpy(home, getenv("HOME"));
 		strcat(home, "/.config/replay");
 
 		dir = opendir(home);
-		saveFiles = malloc(sizeof(char *) * (saves + 1));
+		saveFiles = calloc(sizeof(char) * (saves + 15 + 35), 1);
 		saves = 0;
 
 		// If directory exists
