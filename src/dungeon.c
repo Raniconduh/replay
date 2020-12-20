@@ -9,6 +9,7 @@
 
 int makeEnemy(badGuy * enemy);
 int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
+int enemyAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
 
 
 int dungeon(playerCharacter * character) {
@@ -208,32 +209,8 @@ useItemInput:
 			break;
 		}
 
-		// Enemy turn
-		size_t attackChance = rand() % 
-				(sizeof(damageDeviation) / sizeof(damageDeviation[0]));
-		size_t totalDamage = enemy.damage + attackChance;
-
-		// If deviation is 0, user dodged enemy
-		if (attackChance == 0) {
-			printf("%sYou %sdodged%s the enemy!%s\n", PURPLE, 
-					YELLOW, PURPLE,
-					RESET);
-
-		// if deviation is 2, enemy deals critical damage to the user
-		} else if (attackChance == 2) {
-			character->health -= totalDamage;
-			printf("%sCritical! The enemy dealt %s%ld%s Damage to You.%s\n", 
-					RED, 
-					YELLOW, totalDamage, RED,
-					RESET);
+		enemyAttack(&enemy, damageDeviation, character);
 		
-		// if deviation is not 2 nor 0
-		} else {
-			character->health -= totalDamage;
-			printf("%sThe enemy dealt %s%ld%s Damage to you.%s\n", 
-					RED, YELLOW, totalDamage, RED,
-				   	RESET);
-		}
 		fflush(stdout);
 		sleep(2);
 
@@ -329,6 +306,38 @@ int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * cha
 		printf("%s%sYou attacked for %s%ld%s Damage.%s\n", 
 				CLEAR, PURPLE,
 				YELLOW, totalDamage, PURPLE,
+				RESET);
+	}
+
+	return 0;
+}
+
+int enemyAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character) {
+	// Enemy turn
+	// deviation from enemy attack
+	// 9 is the length of damageDeviation array (can't get arrlen from ptr)
+	size_t attackChance = damageDeviation[rand() % 9];
+	size_t totalDamage = enemy->damage + attackChance;
+
+	// If deviation is 0, user dodged enemy
+	if (attackChance == 0) {
+		printf("%sYou %sdodged%s the enemy!%s\n", PURPLE, 
+				YELLOW, PURPLE,
+				RESET);
+
+	// if deviation is 2, enemy deals critical damage to the user
+	} else if (attackChance == 2) {
+		character->health -= totalDamage;
+		printf("%sCritical! The enemy dealt %s%ld%s Damage to You.%s\n", 
+				RED, 
+				YELLOW, totalDamage, RED,
+				RESET);
+	
+	// if deviation is not 2 nor 0
+	} else {
+		character->health -= totalDamage;
+		printf("%sThe enemy dealt %s%ld%s Damage to you.%s\n", 
+				RED, YELLOW, totalDamage, RED,
 				RESET);
 	}
 
