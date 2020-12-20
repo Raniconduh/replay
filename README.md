@@ -15,6 +15,8 @@ A command line RPG
 9. <del>Add option to run away from battle</del>
 10. <del>Move big functions into seperate files; break them down</del>
 11. <del>Add save files / select save menu</del>
+12.	Split dungeon into multiple functions
+13. Add 'save' menu
 
 &nbsp;&nbsp; a. Add Ability to Load Save Files
 
