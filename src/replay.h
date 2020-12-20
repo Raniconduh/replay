@@ -15,6 +15,8 @@ struct pc {
 	size_t health;
 	size_t damage;
 	size_t coins;
+
+	char * savePath;
 };
 typedef struct pc playerCharacter;
 
@@ -26,6 +28,9 @@ int shop(playerCharacter * character);
 int invMenu(playerCharacter * character);
 void printHeader(char * menuName);
 int startMenu(playerCharacter * character);
+
+int saveGame(playerCharacter * character);
+
 
 extern const char * CLRLINE;
 extern const char * RESET;
