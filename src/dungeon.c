@@ -6,7 +6,9 @@
 
 #include "replay.h"
 
+
 int makeEnemy(badGuy * enemy);
+int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
 
 
 int dungeon(playerCharacter * character) {
@@ -63,36 +65,8 @@ input:
 
 		// User turn and User enter attack
 		if (!strncmp(userInput, "1", 1)) {
-			// User damage deviation value
-			size_t attackChance = damageDeviation[rand() % (arrlen(damageDeviation))];
-
-			// Damage dealt by user + deviation value
-			size_t totalDamage = character->damage + attackChance;
-
-			// If deviation value is 0, turn is missed
-			if (attackChance == 0) {
-				printf("%s%sYou %smissed%s the enemy!%s\n", 
-						CLEAR, PURPLE, 
-						YELLOW, PURPLE, 
-						RESET);
-
-			// Deviation value of 2, user deals critical damage
-			} else if (attackChance == 2) {
-				enemy.health -= totalDamage;
-				printf("%s%sCritical!%s You attacked for %s%ld%s Damage.%s\n", 
-						CLEAR, YELLOW, 
-						PURPLE, 
-						YELLOW, totalDamage, PURPLE,
-						RESET);
-
-			// Normal damage is dealt (deviation is not 2 nor 0)
-			} else {
-				enemy.health -= totalDamage;
-				printf("%s%sYou attacked for %s%ld%s Damage.%s\n", 
-						CLEAR, PURPLE,
-						YELLOW, totalDamage, PURPLE,
-						RESET);
-			}
+			playerAttack(&enemy, damageDeviation, character);
+		
 		// If use item menu is chosen
 		}  else if (!strncmp(userInput, "2", 1)) {
 useItemInput:
@@ -320,6 +294,43 @@ int makeEnemy(badGuy * enemy) {
 			% (enemy->maxDamage - enemy->minDamage + 1)) + enemy->minDamage;
 
 	enemy->name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
+
+	return 0;
+}
+
+
+int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character) {
+	// User damage deviation value
+	// 9 is length of damage deviation array (can't tell arrlen from ptr)
+	size_t attackChance = damageDeviation[rand() % 9];
+
+	// Damage dealt by user + deviation value
+	size_t totalDamage = character->damage + attackChance;
+
+	// If deviation value is 0, turn is missed
+	if (attackChance == 0) {
+		printf("%s%sYou %smissed%s the enemy!%s\n", 
+				CLEAR, PURPLE, 
+				YELLOW, PURPLE, 
+				RESET);
+
+	// Deviation value of 2, user deals critical damage
+	} else if (attackChance == 2) {
+		enemy->health -= totalDamage;
+		printf("%s%sCritical!%s You attacked for %s%ld%s Damage.%s\n", 
+				CLEAR, YELLOW, 
+				PURPLE, 
+				YELLOW, totalDamage, PURPLE,
+				RESET);
+
+	// Normal damage is dealt (deviation is not 2 nor 0)
+	} else {
+		enemy->health -= totalDamage;
+		printf("%s%sYou attacked for %s%ld%s Damage.%s\n", 
+				CLEAR, PURPLE,
+				YELLOW, totalDamage, PURPLE,
+				RESET);
+	}
 
 	return 0;
 }
