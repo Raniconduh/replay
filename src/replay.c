@@ -45,10 +45,10 @@ size_t inventoryCount[] = {2, 0};
 
 
 int main() {
-	if (startMenu(&character))
+	if (startMenu(&character)) {
 		makeCharacter(&character);
-
-	character.coins = 15;
+		character.coins = 15;
+	}
 
 	mainMenu();
 	return 0;
@@ -77,7 +77,8 @@ int mainMenu() {
 		printf("  %s1. Enter Dungeon\n", CYAN);
 		printf("  2. Enter Shop\n");
 		printf("  3. Enter Inventory\n");
-		printf("  4. Quit Game%s\n\n", RESET);
+		printf("  4. Save Game\n");
+		printf("  5. Quit Game%s\n\n", RESET);
 
 		// User input line
 		printf("%s>>>%s ", YELLOW, RESET);
@@ -98,12 +99,39 @@ int mainMenu() {
 
 		} else if (!strncmp(userInput, "4", 1)) {
 			free(userInput);
+			saveGame(&character);
+			printf("%s%sSaving...%s\n", CLEAR, PURPLE, RESET);
+			sleep(1);
+
+		} else if (!strncmp(userInput, "5", 1)) {
+			free(userInput);
 			exit(0);
 
 		} else {
 			free(userInput);
 		}
 	}
+
+	return 0;
+}
+
+
+int saveGame(playerCharacter * character) {
+	char * toSave = calloc((200 + strlen(character->name)
+				+ strlen(character->class)
+				+ sizeof(long long) * 2) * sizeof(char), 1);
+	sprintf(toSave, "<?xml version=\"1.0\"?><character><name>%s</name>\
+			<class>%s</class><totalHealth>%ld</totalHealth>\
+			<health>%ld</health><damage>%ld</damage><coins>%ld</coins></character>",
+			character->name, character->class, character->totalHealth,
+			character->health, character->damage, character->coins);
+
+	FILE * saveFile = fopen(character->savePath, "w+");
+	fputs(toSave, saveFile);
+	fflush(saveFile);
+	fclose(saveFile);
+
+	free(toSave);
 
 	return 0;
 }
