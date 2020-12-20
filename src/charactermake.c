@@ -12,8 +12,8 @@ int makeSave(char * saveName, playerCharacter * character, int overwrite);
 int makeCharacter(playerCharacter * character) {
 makeCharacterLabel:
 	// INITIALIZE POINTERS
-	character->name = malloc(20);
-	character->class = malloc(10);
+	character->name = calloc(sizeof(char) * 20, 1);
+	character->class = calloc(sizeof(char) * 10, 1);
 
 	char * userInput = malloc(10);
 
@@ -134,7 +134,10 @@ int makeSave(char * saveName, playerCharacter * character, int overwrite) {
 	strcat(savePath, "/.config/replay/");
 	strcat(savePath, saveName);
 	strcat(savePath, ".save");
-	
+
+	character->savePath = calloc(sizeof(char) * (strlen(savePath) + 35), 1);
+	strcpy(character->savePath, savePath);
+
 	// if save file exists and overwrite is 1 (dont overwrite)
 	if (access(savePath, F_OK) == 0 && overwrite) {
 		return 1;
