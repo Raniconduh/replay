@@ -6,6 +6,8 @@
 
 #include "replay.h"
 
+int makeEnemy(badGuy * enemy);
+
 
 int dungeon(playerCharacter * character) {
 	size_t damageDeviation[] = {-2, -2, -1, -1, 0, 1, 1, 2, 2};
@@ -15,56 +17,7 @@ int dungeon(playerCharacter * character) {
 	
 	badGuy enemy;
 
-	// all enemy sizes: Tiny, Small, Normal Sized, Large, Enormously Big
-	enemy.size = sizes[rand() % arrlen(sizes)];
-
-	if (!strcmp(enemy.size, "Tiny")) {
-		enemy.minHealth = 5;
-		enemy.maxHealth = 15;
-
-		enemy.minDamage = 5;
-		enemy.maxDamage = 10;
-
-	} else if (!strcmp(enemy.size, "Small")) {
-		enemy.minHealth = 10;
-		enemy.maxHealth = 25;
-		
-		enemy.minDamage = 10;
-		enemy.maxDamage = 20;
-
-	} else if (!strcmp(enemy.size, "Normal Sized")) {
-		enemy.minHealth = 20;
-		enemy.maxHealth = 35;
-
-		enemy.minDamage = 15;
-		enemy.maxDamage = 25;
-		
-	} else if (!strcmp(enemy.size, "Large")) {
-		enemy.minHealth = 30;
-		enemy.maxHealth = 45;
-		
-		enemy.minDamage = 20;
-		enemy.maxDamage = 35;
-
-	// Enormously big
-	} else {
-		enemy.minHealth = 30;
-		enemy.maxHealth = 50;
-
-		enemy.minDamage = 35;
-		enemy.maxDamage = 45;
-
-	}
-
-	// random in range: (rand() % (max - min + 1)) + min
-	enemy.health = (rand() % (
-				enemy.maxHealth - enemy.minHealth + 1)) + enemy.minHealth;
-	enemy.totalHealth = enemy.health;
-
-	enemy.damage = (rand() % (
-				enemy.maxDamage - enemy.minDamage + 1)) + enemy.minDamage;
-
-	enemy.name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
+	makeEnemy(&enemy);
 
     printHeader("Dungeon");
 
@@ -312,6 +265,62 @@ useItemInput:
 		sleep(2);
 
 	}
+
+	return 0;
+}
+
+
+int makeEnemy(badGuy * enemy) {
+	// all enemy sizes: Tiny, Small, Normal Sized, Large, Enormously Big
+	enemy->size = sizes[rand() % arrlen(sizes)];
+
+	if (!strcmp(enemy->size, "Tiny")) {
+		enemy->minHealth = 5;
+		enemy->maxHealth = 15;
+
+		enemy->minDamage = 5;
+		enemy->maxDamage = 10;
+
+	} else if (!strcmp(enemy->size, "Small")) {
+		enemy->minHealth = 10;
+		enemy->maxHealth = 25;
+		
+		enemy->minDamage = 10;
+		enemy->maxDamage = 20;
+
+	} else if (!strcmp(enemy->size, "Normal Sized")) {
+		enemy->minHealth = 20;
+		enemy->maxHealth = 35;
+
+		enemy->minDamage = 15;
+		enemy->maxDamage = 25;
+		
+	} else if (!strcmp(enemy->size, "Large")) {
+		enemy->minHealth = 30;
+		enemy->maxHealth = 45;
+		
+		enemy->minDamage = 20;
+		enemy->maxDamage = 35;
+
+	// Enormously big
+	} else {
+		enemy->minHealth = 30;
+		enemy->maxHealth = 50;
+
+		enemy->minDamage = 35;
+		enemy->maxDamage = 45;
+
+	}
+
+	// random in range: (rand() % (max - min + 1)) + min
+	enemy->health = (rand()
+			% (enemy->maxHealth - enemy->minHealth + 1)) + enemy->minHealth;
+	enemy->totalHealth = enemy->health;
+
+	enemy->damage = (rand()
+			% (enemy->maxDamage - enemy->minDamage + 1)) + enemy->minDamage;
+
+	enemy->name = enemies[rand() % (sizeof(enemies) / sizeof(enemies[0]))];
 
 	return 0;
 }
