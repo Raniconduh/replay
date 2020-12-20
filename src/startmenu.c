@@ -34,7 +34,7 @@ int searchSaves() {
 			saves++;
 
 			// reallocate saveFiles to be able to store more saves
-			saveFiles = realloc(saveFiles, sizeof(char *) * (saves + 15));
+			saveFiles = realloc(saveFiles, sizeof(char *) * (saves + 35));
 		}
 	}
 
@@ -55,10 +55,14 @@ int loadSave(char * saveName, playerCharacter * character) {
 	xmlNode *root, *first_child, *node;
 	
 	// save the path of save file into `file` variable
-	char * filePath = calloc((strlen(getenv("HOME")) + strlen(saveName)) * sizeof(char *), 1);
+	char * filePath = calloc((strlen(getenv("HOME"))
+				+ strlen(saveName) + 35) * sizeof(char), 1);
 	strcpy(filePath, getenv("HOME"));
 	strcat(filePath, "/.config/replay/");
 	strcat(filePath, saveName);
+
+	character->savePath = calloc(sizeof(char) * (strlen(filePath) + 35), 1);
+	strcpy(character->savePath, filePath);
 
 	saveFile = xmlReadFile(filePath, NULL, 0);
 
@@ -111,13 +115,13 @@ startMenuLabel:
 	printf("  3. Quit Game%s\n\n", RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
-	char * userInput = malloc(sizeof(char) * 5);
+	char * userInput = malloc(sizeof(char) * 10);
 	scanf("%s", userInput);
 
 	// Load an existing save
 	if (!strncmp(userInput, "1", 1)) {
 		// get $HOME environment variable
-		char * home = calloc(sizeof(char) * (strlen(getenv("HOME")) + strlen("/.config/replay") + 10), 1);
+		char * home = calloc(sizeof(char) * (strlen(getenv("HOME")) + strlen("/.config/replay") + 35), 1);
 		strcpy(home, getenv("HOME"));
 		strcat(home, "/.config/replay");
 
@@ -154,7 +158,7 @@ startMenuLabel:
 			scanf("%s", userInput);
 			
 			// convert i to string to compare user input to it
-			char * stringi = malloc(sizeof(i) * sizeof(char));
+			char * stringi = calloc((sizeof(i) + 15) * sizeof(char), 1);
 			snprintf(stringi, sizeof(i), "%ld", i);
 
 			// if user chooses exit option
