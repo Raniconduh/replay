@@ -94,7 +94,7 @@ saveInputLabel:
 
 	char * saveInput = malloc(sizeof(char) * 20);
 	printf("%s>>>%s ", YELLOW, RESET);
-	scanf("%s", userInput);
+	scanf("%s", saveInput);
 
 	if (strlen(saveInput) > 14) {
 		printf("%s%sError: Save name too long. Retrying...%s\n",
