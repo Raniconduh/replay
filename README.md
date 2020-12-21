@@ -16,7 +16,7 @@ A command line RPG
 10. <del>Move big functions into seperate files; break them down</del>
 11. <del>Add save files / select save menu</del>
 12. Split dungeon into multiple functions
-13. Add 'save' menu
+13. <del>Add 'save' menu</del>
 
 ## Bugs
 1. Quickly spamming a number and enter will lead to automatic menu selections
