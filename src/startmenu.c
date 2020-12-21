@@ -203,7 +203,7 @@ startMenuLabel:
 		} else if (ENOENT == errno) {
 			printf("%s%sNo directory found.%s\n", CLEAR, RED, RESET);
 			sleep(1);
-
+			goto startMenuLabel;
 		// opendir failed
 		} else {
 			printf("%s%sProblem searching for saves.%s\n", CLEAR, RED, RESET);
