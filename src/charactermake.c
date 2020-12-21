@@ -128,6 +128,9 @@ saveInputLabel:
 
 // create a save file and write to it
 int makeSave(char * saveName, playerCharacter * character, int overwrite) {
+	// make sure save directory exists
+	system("mkdir -p ~/.config/replay 2> /dev/null");
+
 	char * home = getenv("HOME");
 	char * savePath = calloc((strlen(home) + strlen(saveName) + strlen(".save") + 15) * sizeof(char), 1);
 	strcpy(savePath, home);
