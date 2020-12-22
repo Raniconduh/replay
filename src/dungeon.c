@@ -14,7 +14,7 @@ int enemyAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * char
 
 int dungeon(playerCharacter * character) {
 	size_t damageDeviation[] = {-2, -2, -1, -1, 0, 1, 1, 2, 2};
-	char * userInput = malloc(3);
+	char * userInput = malloc(sizeof(char) * 10);
 
 	srand(time(NULL));
 	
@@ -99,6 +99,7 @@ useItemInput:
 						printf("%s%sYou cannot use this item. Health is too high%s\n",
 						CLEAR, PURPLE, RESET);
 						sleep(1);
+
 						goto useItemInput;
 					}
 				// if item 1 is not available in the inventory (less than 1)
@@ -107,13 +108,16 @@ useItemInput:
 							CLEAR, PURPLE,
 							RESET);
 					sleep(1);
+
 					goto input;
 				}
 			} else if (!strncmp(userInput, "2", 1)) {
+
 				goto input;
 			} else {
 				printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 				sleep(1);
+
 				goto useItemInput;
 			}
 
@@ -125,6 +129,8 @@ useItemInput:
 						CLEAR, PURPLE, RESET);
 				sleep(1);
 				
+				free(userInput);
+
 				return 0;
 
 			// if runaway fails
@@ -172,6 +178,7 @@ useItemInput:
 		} else {
 			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 			sleep(1);
+
 			goto input;
 		}
 		fflush(stdout);
@@ -206,6 +213,7 @@ useItemInput:
 			
 			fflush(stdout);
 			sleep(2);
+
 			break;
 		}
 
@@ -215,6 +223,8 @@ useItemInput:
 		sleep(2);
 
 	}
+
+	free(userInput);
 
 	return 0;
 }
