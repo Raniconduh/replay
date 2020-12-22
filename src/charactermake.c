@@ -132,7 +132,7 @@ int makeSave(char * saveName, playerCharacter * character, int overwrite) {
 	system("mkdir -p ~/.config/replay 2> /dev/null");
 
 	char * home = getenv("HOME");
-	char * savePath = calloc((strlen(home) + strlen(saveName) + strlen(".save") + 15) * sizeof(char), 1);
+	char * savePath = calloc((strlen(home) + strlen(saveName) + strlen(".save") + 35) * sizeof(char), 1);
 	strcpy(savePath, home);
 	strcat(savePath, "/.config/replay/");
 	strcat(savePath, saveName);
@@ -143,6 +143,8 @@ int makeSave(char * saveName, playerCharacter * character, int overwrite) {
 
 	// if save file exists and overwrite is 1 (dont overwrite)
 	if (access(savePath, F_OK) == 0 && overwrite) {
+		free(savePath);
+
 		return 1;
 	}
 
@@ -158,8 +160,8 @@ int makeSave(char * saveName, playerCharacter * character, int overwrite) {
 	
 	FILE * saveFile = fopen(savePath, "w+");
 	fputs(toSave, saveFile);
-	fclose(saveFile);
 	fflush(saveFile);
+	fclose(saveFile);
 	
 	free(toSave);
 	free(savePath);
