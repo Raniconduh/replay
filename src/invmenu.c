@@ -17,9 +17,11 @@ invLabel:
 	printf("%s  %ld. Exit%s\n\n", CYAN, arrlen(inventoryOptions) + 1, RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
-	char * userInput = malloc(3);
+	char * userInput = malloc(sizeof(char) * 5);
 	scanf("%s", userInput);
 
+	// exitNumber is the number at which the exit option
+	// in the game is found (it changes depending on number of saves)
 	char * exitNumber = malloc(arrlen(inventoryCount) * sizeof(int));
 	sprintf(exitNumber, "%ld", arrlen(inventoryCount) + 1);
 
@@ -27,6 +29,9 @@ invLabel:
 
 	// if the exit option is chosen
 	if (!strcmp(userInput, exitNumber)) {
+		free(userInput);
+		free(exitNumber);
+
 		return 0;
 
 	// if option 1 is chosen
@@ -62,6 +67,9 @@ invLabel:
 			sleep(1);
 		}
 	
+		free(userInput);
+		free(exitNumber);
+
 		goto invLabel;
 
 	// If chosen option is not a usable item or does not exist
