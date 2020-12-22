@@ -100,6 +100,9 @@ int loadSave(char * saveName, playerCharacter * character) {
 	}
 
 	xmlFreeDoc(saveFile);
+
+	xmlCleanupParser();
+
 	free(filePath);
 
 	return 0;
@@ -135,7 +138,10 @@ startMenuLabel:
 			if (searchSaves() == 1) {
 				printf("%s%sNo saves found.%s\n", CLEAR, PURPLE, RESET);
 				sleep(1);
-
+				
+				free(home);
+				free(saveFiles);
+				free(userInput);
 				closedir(dir);
 
 				goto startMenuLabel;
@@ -166,6 +172,7 @@ startMenuLabel:
 				free(home);
 				free(stringi);
 				free(saveFiles);
+				free(userInput);
 				closedir(dir);
 
 				goto startMenuLabel;
@@ -176,21 +183,33 @@ startMenuLabel:
 					printf("%s%sError: Invalid Input. Retrying...%s\n",
 							CLEAR, RED, RESET);
 					sleep(1);
-
+					
+					free(userInput);
 					free(home);
 					free(stringi);
 					free(saveFiles);
+
 					closedir(dir);
 
 					goto startMenuLabel;
 				} // else {
 
-				if (!loadSave(saveFiles[intInput - 1], character))
-					return 0;
+				if (!loadSave(saveFiles[intInput - 1], character)) {
+					free(userInput);
+					free(stringi);
+					free(saveFiles);
+					free(home);
 
+					closedir(dir);
+
+					return 0;
+				}
+				
+				free(userInput);
 				free(home);
 				free(stringi);
 				free(saveFiles);
+
 				closedir(dir);
 
 				goto startMenuLabel;
@@ -203,24 +222,36 @@ startMenuLabel:
 		} else if (ENOENT == errno) {
 			printf("%s%sNo directory found.%s\n", CLEAR, RED, RESET);
 			sleep(1);
+			
+			free(userInput);
+			free(home);
+			free(saveFiles);
+
 			goto startMenuLabel;
 		// opendir failed
 		} else {
 			printf("%s%sProblem searching for saves.%s\n", CLEAR, RED, RESET);
 			sleep(1);
 			
+			free(userInput);
+			free(home);
+			free(saveFiles);
+
 			goto startMenuLabel;
 		}
 
 	// Make a new save
 	} else if (!strncmp(userInput, "2", 1)) {
 		free(userInput);
+
 		return 1;
 	} else if (!strncmp(userInput, "3", 1)) {
 		free(userInput);
+
 		exit(0);
 	} else {
 		free(userInput);
+
 		goto startMenuLabel;
 	}
 
