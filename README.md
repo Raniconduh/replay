@@ -18,6 +18,7 @@ A command line RPG
 12. Split dungeon into multiple functions
 13. <del>Add 'save' menu</del>
 14. Add Player Death
+15. Add Inventory to Save Files
 
 ## Bugs
 1. Quickly spamming a number and enter will lead to automatic menu selections
