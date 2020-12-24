@@ -10,6 +10,7 @@
 int makeEnemy(badGuy * enemy);
 int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
 int enemyAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
+int tryRunAway(playerCharacter * character);
 
 
 int dungeon(playerCharacter * character) {
@@ -123,58 +124,15 @@ useItemInput:
 
 		// if runaway option is chosen
 		} else if (!strncmp(userInput, "3", 1)) {
-			// If run away is succesful
-			if (rand() % 3 == 0) {
-				printf("%s%sYou successfully ran away.%s\n",
-						CLEAR, PURPLE, RESET);
-				sleep(1);
-				
+			// if return vaue of tryRunAway is 0,
+			// then running away is succesful and dungeon
+			// should be exited
+			if (!tryRunAway(character)) {
 				free(userInput);
 
 				return 0;
-
-			// if runaway fails
-			} else {
-				// Index 0 is good excuses, index 1 is bad
-				char excuses[2][2][100] = {
-					{
-						"You forgot how to run! Did not escape.",
-						"Your enemy has slowed you. Did not escape."
-					},
-					{
-						"You have been poisoned by your enemy. Did not escape",
-						"You tripped on a sharp rock. Did not escape."
-					}
-				};
-				
-				// good excuse; index 0
-				if (rand() % 2 == 0) {
-					char * excuse = excuses[0][rand() % 2];
-					printf("%s%s%s%s\n",
-							CLEAR, PURPLE, excuse, RESET);
-					sleep(1);
-				// bad excuse; index 1
-				} else {
-					char * excuse = excuses[1][rand() % 2];
-					
-					int minExcuseDamage = 2;
-					int maxExcuseDamage = 6;
-
-					int excuseDamage = (rand() % (maxExcuseDamage - minExcuseDamage + 1)) + minExcuseDamage;
-
-					printf("%s%s%s%s\n",
-							CLEAR, PURPLE, excuse, RESET);
-					sleep(1);
-					printf("%sYou lost %s%d%s Health%s\n",
-							PURPLE,
-							YELLOW, excuseDamage, PURPLE,
-							RESET);
-
-					character->health -= excuseDamage;
-					sleep(1);
-
-				}
 			}
+
 		} else {
 			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
 			sleep(1);
@@ -227,6 +185,65 @@ useItemInput:
 	free(userInput);
 
 	return 0;
+}
+
+
+int tryRunAway(playerCharacter * character) {
+	// If run away is succesful
+	if (rand() % 3 == 0) {
+		printf("%s%sYou successfully ran away.%s\n",
+				CLEAR, PURPLE, RESET);
+		sleep(1);
+
+		return 0;
+
+	// if runaway fails
+	} else {
+		// Index 0 is good excuses, index 1 is bad
+		// bad exuse means damage is dealth to player
+		// good excuse means player does not take any damage
+		// excuses are reasons why they player could not escape
+		char excuses[2][2][100] = {
+			{
+				"You forgot how to run! Did not escape.",
+				"Your enemy slowed you! Did not escape."
+			},
+			{
+				"You've been poisoned by your enemy! Did not escape",
+				"You tripped on a sharp rock! Did not escape."
+			}
+		};
+		
+		// good excuse; index 0
+		if (rand() % 2 == 0) {
+			char * excuse = excuses[0][rand() % 2];
+			printf("%s%s%s%s\n",
+					CLEAR, PURPLE, excuse, RESET);
+			sleep(1);
+		// bad excuse; index 1
+		} else {
+			char * excuse = excuses[1][rand() % 2];
+			
+			int minExcuseDamage = 2;
+			int maxExcuseDamage = 6;
+
+			int excuseDamage = (rand() % (maxExcuseDamage - minExcuseDamage + 1)) + minExcuseDamage;
+
+			printf("%s%s%s%s\n",
+					CLEAR, PURPLE, excuse, RESET);
+			sleep(1);
+			printf("%sYou lost %s%d%s Health%s\n",
+					PURPLE,
+					YELLOW, excuseDamage, PURPLE,
+					RESET);
+
+			character->health -= excuseDamage;
+			sleep(1);
+
+		}
+	}
+
+	return 1;
 }
 
 
