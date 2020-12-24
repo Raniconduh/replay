@@ -11,7 +11,7 @@ int makeEnemy(badGuy * enemy);
 int playerAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
 int enemyAttack(badGuy * enemy, size_t damageDeviation[], playerCharacter * character);
 int tryRunAway(playerCharacter * character);
-
+int useItem(playerCharacter * character);
 
 int dungeon(playerCharacter * character) {
 	size_t damageDeviation[] = {-2, -2, -1, -1, 0, 1, 1, 2, 2};
@@ -71,55 +71,12 @@ input:
 		
 		// If use item menu is chosen
 		}  else if (!strncmp(userInput, "2", 1)) {
-useItemInput:
-			printHeader("Dungeon - Use Item");
-
-			// options
-			printf("%s  1. Health Potion: %s%ld%s\n",
-					CYAN,
-					YELLOW, inventoryCount[0], RESET);
-			printf("%s  2. Exit%s\n\n", CYAN, RESET);
-			
-			printf("%s>>>%s ", YELLOW, RESET);
-			scanf("%s", userInput);
-
-			// if option 1 is chosen
-			if (!strncmp(userInput, "1", 1)) {
-				// if item 1 is available in the inventory (greater than 0)
-				if (inventoryCount[0] >= 1) {
-					if (character->health < character->totalHealth - 15) {
-						printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
-								CLEAR, PURPLE,
-								YELLOW, PURPLE,
-								RESET);
-						
-						inventoryCount[0]--;
-						character->health += 15;
-						sleep(1);
-					} else {
-						printf("%s%sYou cannot use this item. Health is too high%s\n",
-						CLEAR, PURPLE, RESET);
-						sleep(1);
-
-						goto useItemInput;
-					}
-				// if item 1 is not available in the inventory (less than 1)
-				} else {
-					printf("%s%sYou do not have any Health Potions.%s\n",
-							CLEAR, PURPLE,
-							RESET);
-					sleep(1);
-
-					goto input;
-				}
-			} else if (!strncmp(userInput, "2", 1)) {
-
+			// if useItem return 1,
+			// then user input was incorrect
+			// and or user chose to exit use item menu
+			// therefore go up to input label
+			if (useItem(character)) {
 				goto input;
-			} else {
-				printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
-				sleep(1);
-
-				goto useItemInput;
 			}
 
 		// if runaway option is chosen
@@ -183,6 +140,70 @@ useItemInput:
 	}
 
 	free(userInput);
+
+	return 0;
+}
+
+
+int useItem(playerCharacter * character) {
+	do {
+		printHeader("Dungeon - Use Item");
+
+		// options
+		printf("%s  1. Health Potion: %s%ld%s\n",
+				CYAN,
+				YELLOW, inventoryCount[0], RESET);
+		printf("%s  2. Exit%s\n\n", CYAN, RESET);
+
+		char * userInput = malloc(sizeof(char) * 5);
+		printf("%s>>>%s ", YELLOW, RESET);
+		scanf("%s", userInput);
+
+		// if option 1 is chosen
+		if (!strncmp(userInput, "1", 1)) {
+			// if item 1 is available in the inventory (greater than 0)
+			if (inventoryCount[0] >= 1) {
+				if (character->health < character->totalHealth - 15) {
+					printf("%s%sYou used a Health Potion and gained %s15%s health.%s\n",
+							CLEAR, PURPLE,
+							YELLOW, PURPLE,
+							RESET);
+					
+					inventoryCount[0]--;
+					character->health += 15;
+					sleep(1);
+
+					return 0;
+				} else {
+					printf("%s%sYou cannot use this item. Health is too high%s\n",
+					CLEAR, PURPLE, RESET);
+					sleep(1);
+
+					free(userInput);
+				}
+			// if item 1 is not available in the inventory (less than 1)
+			} else {
+				printf("%s%sYou do not have any Health Potions.%s\n",
+						CLEAR, PURPLE,
+						RESET);
+				sleep(1);
+
+				free(userInput);
+				return 1;
+			}
+		} else if (!strncmp(userInput, "2", 1)) {
+
+			free(userInput);
+			return 1;
+
+		} else {
+			printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
+			sleep(1);
+
+			free(userInput);
+		}
+
+	} while (1);
 
 	return 0;
 }
