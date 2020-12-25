@@ -36,6 +36,7 @@ invLabel:
 	free(exitNumber);
 
 	// user input as an integer
+	// needs to be subtracted 1 if used as an index
 	size_t intInput;
 	if (!(intInput = strtoull(userInput, NULL, 10))) {
 		free(userInput);
@@ -61,15 +62,18 @@ invLabel:
 
 			inventoryCount[intInput - 1]--;
 			character->health += 15;
-			// set health to 100 if it is greater than 100
+			// set health to totalHealth if it is greater than it
 			character->health > character->totalHealth ?
 				character->health = character->totalHealth:0;
 		}
 
+		// these lines of code are put here since they
+		// otherwise would have been repeated
 		sleep(1);
 		free(userInput);
 		goto invLabel;
 
+	// a non-usuable or bad input was chosen
 	} else {
 		free(userInput);
 
@@ -81,6 +85,8 @@ invLabel:
 		goto invLabel;
 	}
 
+	// realistically these loc will not be executed
+	// gotos and returns above forbid this
 	free(userInput);
 
 	return 0;

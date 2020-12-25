@@ -20,8 +20,6 @@ makeCharacterLabel:
 	character->name = calloc(sizeof(char) * 20, 1);
 	character->class = calloc(sizeof(char) * 10, 1);
 
-	char * userInput = malloc(sizeof(char) * 5);
-
 	// user enters their username
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sEnter your name:%s ", PURPLE, RESET);
@@ -33,9 +31,6 @@ makeCharacterLabel:
 		    CLEAR, RED, RESET);
 
 	    sleep(1);
-
-		free(userInput);
-
 	    goto makeCharacterLabel;
 	}
 
@@ -44,10 +39,12 @@ makeCharacterLabel:
 	printf("%sWelcome to Replay%s\n", GREEN, RESET);
 	printf("%sPick Your class:%s\n\n", PURPLE, RESET);
 	
+	// character class input choices / options
 	printf("%s  1. Warrior\n", CYAN);
 	printf("  2. Mage\n");
 	printf("  3. Archer%s\n\n", RESET);
 	
+	char * userInput = malloc(sizeof(char) * 5);
 	printf("%s>>>%s ", YELLOW, RESET);
 	scanf("%s", userInput);
 
@@ -76,10 +73,9 @@ makeCharacterLabel:
 	// invalid input is chosen
 	} else {
 		printf("%s%sError: Invalid input. Retrying...%s\n", CLEAR, RED, RESET);
+
 		sleep(1);
-
 		free(userInput);
-
 		goto makeCharacterLabel;
 	}
 	
@@ -110,17 +106,16 @@ saveInputLabel:
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sEnter Save Name (no spaces):%s\n\n", PURPLE, RESET);
 
-	char * saveInput = malloc(sizeof(char) * 20);
+	char * saveInput = malloc(sizeof(char) * 15);
 	printf("%s>>>%s ", YELLOW, RESET);
 	scanf("%s", saveInput);
 
 	if (strlen(saveInput) > 14) {
 		printf("%s%sError: Save name too long. Retrying...%s\n",
 				CLEAR, RED, RESET);
+		
 		sleep(1);
-
 		free(saveInput);
-
 		goto saveInputLabel;
 	}
 
