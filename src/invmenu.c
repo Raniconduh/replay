@@ -21,11 +21,10 @@ invLabel:
 	scanf("%s", userInput);
 
 	// exitNumber is the number at which the exit option
-	// in the game is found (it changes depending on number of saves)
+	// in the inventory menu is found (it changes depending on number of
+	// the items in the inventory)
 	char * exitNumber = malloc(arrlen(inventoryCount) * sizeof(int));
 	sprintf(exitNumber, "%ld", arrlen(inventoryCount) + 1);
-
-	printf("%s  %s. Exit%s\n\n", CYAN, exitNumber, RESET);
 
 	// if the exit option is chosen
 	if (!strcmp(userInput, exitNumber)) {
@@ -33,49 +32,46 @@ invLabel:
 		free(exitNumber);
 
 		return 0;
+	}
+	free(exitNumber);
 
-	// if option 1 is chosen
-	} else if (!strcmp(userInput, "1")) {
-
-		// If there are more than 0 health potions and option 1 is chosen
-		if (inventoryCount[0] > 0)  {
-
-			// If current health is far enough away from max health
-			if (character->health < character->totalHealth - 15) {
-			printf("%s%sYou used %s1%s Health Potion and gained %s15%s Health.%s\n",
-					CLEAR, PURPLE,
-					YELLOW, PURPLE, YELLOW, PURPLE,
-					RESET);
-			
-			inventoryCount[0]--;
-			character->health += 15;
-			
-			sleep(1);
-			
-			// if current health is too close to max health
-			} else {
-				printf("%s%sYou cannot use this item. Health is too high%s\n",
-						CLEAR, PURPLE, RESET);
-				sleep(1);
-
-			}
-
-		// If there are not enough health potions
-		} else {
-			printf("%s%sYou do not have any Health Potions%s\n",
-					CLEAR, PURPLE, RESET);
-			sleep(1);
-		}
-	
+	// user input as an integer
+	size_t intInput;
+	if (!(intInput = strtoull(userInput, NULL, 10))) {
 		free(userInput);
-		free(exitNumber);
+		goto invLabel;
+	}
 
+	// health potion option is chosen
+	if (!strcmp(inventoryOptions[intInput - 1], "Health Potion")) {
+		// if there are no health potions
+		if (inventoryCount[intInput - 1] < 1) {
+			printf("%s%sYou have no Health Potions.%s\n", 
+					CLEAR, PURPLE, RESET);
+			
+		// if health is too high
+		} else if (character->health > character->totalHealth - 10) {
+			printf("%s%sHealth is too high. You cannot use this item%s\n",
+					CLEAR, PURPLE, RESET);
+
+		// conditions are met to use health potion
+		} else {
+			printf("%s%sYou used a Health Potion and gained %s15%s Health%s\n",
+					CLEAR, PURPLE, YELLOW, PURPLE, RESET);
+
+			inventoryCount[intInput - 1]--;
+			character->health += 15;
+			// set health to 100 if it is greater than 100
+			character->health > character->totalHealth ?
+				character->health = character->totalHealth:0;
+		}
+
+		sleep(1);
+		free(userInput);
 		goto invLabel;
 
-	// If chosen option is not a usable item or does not exist
 	} else {
 		free(userInput);
-		free(exitNumber);
 
 		printf("%s%sYou cannot use this item.%s\n",
 				CLEAR, PURPLE, RESET);
@@ -86,7 +82,6 @@ invLabel:
 	}
 
 	free(userInput);
-	free(exitNumber);
 
 	return 0;
 }
