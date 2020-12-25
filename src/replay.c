@@ -73,7 +73,8 @@ int mainMenu() {
 		// Options
 		printf("  %s1. Enter Dungeon\n", CYAN);
 		printf("  2. Enter Shop\n");
-		printf("  3. Enter Inventory\n");
+		printf("  3. Enter Inventory\n\n");
+
 		printf("  4. Save Game\n");
 		printf("  5. Quit Game%s\n\n", RESET);
 
