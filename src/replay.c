@@ -139,11 +139,6 @@ int saveGame(playerCharacter * character) {
 
 	strcat(toSave, "</character>");
 
-	#ifdef DEBUG
-		printf("Save file buffer: %s\n", toSave);
-		sleep(2);
-	#endif
-
 	FILE * saveFile = fopen(character->savePath, "w+");
 	fputs(toSave, saveFile);
 	fflush(saveFile);
