@@ -117,12 +117,32 @@ int mainMenu() {
 int saveGame(playerCharacter * character) {
 	char * toSave = calloc((200 + strlen(character->name)
 				+ strlen(character->class)
-				+ sizeof(long long) * 2) * sizeof(char), 1);
-	sprintf(toSave, "<?xml version=\"1.0\"?><character><name>%s</name>\
-			<class>%s</class><totalHealth>%ld</totalHealth>\
-			<health>%ld</health><damage>%ld</damage><coins>%ld</coins></character>",
+				+ sizeof(long long) * 2
+				+ arrlen(inventoryCount) * 5)
+				* sizeof(char), sizeof(char));
+	sprintf(toSave, "<?xml version=\"1.0\"?><character><name>%s</name><class>%s</class><totalHealth>%ld</totalHealth><health>%ld</health><damage>%ld</damage><coins>%ld</coins>",
 			character->name, character->class, character->totalHealth,
 			character->health, character->damage, character->coins);
+
+	// buffer for individual inventory indexes
+	char * buf = malloc(sizeof(char) * 10);
+
+	// save inventory specs block
+	for (size_t i = 0; i < arrlen(inventoryCount); i++) {
+		// <iindex>count</iindex>
+		// i is necessary as xml tags cannot start with numbers
+		sprintf(buf, "<i%ld>%ld</i%ld>", i, inventoryCount[i], i);
+		strcat(toSave, buf);
+	}
+
+	free(buf);
+
+	strcat(toSave, "</character>");
+
+	#ifdef DEBUG
+		printf("Save file buffer: %s\n", toSave);
+		sleep(2);
+	#endif
 
 	FILE * saveFile = fopen(character->savePath, "w+");
 	fputs(toSave, saveFile);
