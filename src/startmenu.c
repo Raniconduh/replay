@@ -4,6 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include <dirent.h>
+#include <ctype.h>
 
 #include <libxml/parser.h>
 
@@ -96,13 +97,28 @@ int loadSave(char * saveName, playerCharacter * character) {
 		else if (!strcmp((char *)node->name, "coins"))
 			character->coins = strtoull(
 					(char*)xmlNodeGetContent(node), NULL, 10);
+		
+		else if (strcmp((char *)node->name, "text")) {
+			// if string is "i[0-9]", then it is an inventory index save
+			if ((char)node->name[0] == 'i' && isdigit((char)node->name[1])) {
 
+				char * newIndex = malloc(strlen((char *)node->name) * sizeof(char));
+				strcpy(newIndex, (char *)node->name);
+				// strip the letter 'i' from the index of the inventory item
+				memmove(&newIndex[0], &newIndex[1], strlen(newIndex));
+				// convert string index to a number
+				size_t invIndex = strtoull(newIndex, NULL, 10);
+				free(newIndex);
+				// count of the item at inventory index invIndex
+				size_t invCount = strtoull((char *)xmlNodeGetContent(node), NULL, 10);
+				// load item count
+				inventoryCount[invIndex] = invCount;
+			}
+		}
 	}
 
 	xmlFreeDoc(saveFile);
-
 	xmlCleanupParser();
-
 	free(filePath);
 
 	return 0;
