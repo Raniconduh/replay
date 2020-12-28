@@ -127,15 +127,63 @@ input:
 			}
 			
 			fflush(stdout);
-			sleep(2);
+			sleep(1);
 
 			break;
 		}
 
 		enemyAttack(&enemy, damageDeviation, character);
-		
+	
+		if ((long long)character->health < 1) {
+			printf("%s%sYou've been slain by your enemy!%s\n",
+					CLEAR, PURPLE, RESET);
+
+			// sleep makes it feeling like healer 
+			// takes different amount of times to heal
+			sleep((rand() % 3) + 1);
+
+			// choose name for healer
+			char * healer = healerNames[rand() % arrlen(healerNames)];
+			printf("%s%s%s the Healer brought you back to life!%s\n",
+					YELLOW, healer, PURPLE, RESET);
+			character->health = character->totalHealth;
+			sleep(2);
+
+			// healer takes coins as payment
+			int stolenCoins = rand() % 15;
+			if (stolenCoins) {
+				printf("%sIts seems that %s%s%s has taken %s%d%s Coins as payment...%s\n",
+						PURPLE, YELLOW, healer, PURPLE,
+						YELLOW, stolenCoins, PURPLE, RESET);
+				character->coins -= stolenCoins;
+				sleep(2);
+			} else {
+				printf("%sThis time, %s%s%s is letting you off for free.%s\n",
+						PURPLE, YELLOW, healer, PURPLE, RESET);
+				sleep(2);
+			}
+
+			printf("%s%s%s also gave you %s1%s Health Potion...%s\n",
+					YELLOW, healer, PURPLE, YELLOW, PURPLE, RESET);
+			inventoryCount[0]++;
+			sleep(2);
+
+			if  ((long long)character->coins < 0) {
+				printf("%s%sOh no, you are in %sdebt%s!%s\n",
+						CLEAR, PURPLE, RED, PURPLE, RESET);
+				sleep(2);
+
+				printf("%sThis means you can't spend Coins until you regain them.%s\n",
+						PURPLE, RESET);
+				sleep(2);
+			}
+
+			free(userInput);
+			return 0;
+		}
+
 		fflush(stdout);
-		sleep(2);
+		sleep(3);
 
 	}
 
