@@ -80,5 +80,5 @@ extern size_t inventoryCount[2];
 extern char * sizes[5];
 extern char * enemies[16];
 
-extern char * healerNames[3];
+extern char * healerNames[9];
 
