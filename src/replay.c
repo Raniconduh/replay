@@ -40,6 +40,8 @@ char * inventoryOptions[] = {"Health Potion", "Flesh"};
 // (index corresponds to inventoryOptions)
 size_t inventoryCount[] = {2, 0};
 
+char * healerNames[] = {"Marcita", "Lovely", "Essence"};
+
 
 int main() {
 	if (startMenu(&character)) {
