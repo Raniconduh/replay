@@ -24,7 +24,7 @@ int shop(playerCharacter * character) {
 		// If user chooses 1st input
 		if (!strncmp(userInput, "1", 1)) {
 			// If user has enough coins
-			if (character->coins >= 10) {
+			if ((long long)character->coins >= 10) {
 				printf("%s%sSuccessfully bought 1 Health Potion.\n", 
 						CLEAR, PURPLE);
 
