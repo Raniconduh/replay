@@ -31,6 +31,10 @@ makeCharacterLabel:
 		    CLEAR, RED, RESET);
 
 	    sleep(1);
+
+		free(character->name);
+		free(character->class);
+
 	    goto makeCharacterLabel;
 	}
 
@@ -76,9 +80,13 @@ makeCharacterLabel:
 
 		sleep(1);
 		free(userInput);
+		free(character->name);
+		free(character->class);
 		goto makeCharacterLabel;
 	}
 	
+	character->coins = 15;
+
 	// Asks for confirmation on user choices of class and username
 	printf("%s%sWelcome to Replay%s\n", CLEAR, GREEN, RESET);
 	printf("%sYou are %s%s%s the %s%s%s\n", 
@@ -98,6 +106,8 @@ makeCharacterLabel:
 		sleep(1);
 	
 		free(userInput);
+		free(character->name);
+		free(character->class);
 
 		goto makeCharacterLabel;
 	}
