@@ -48,7 +48,6 @@ char * healerNames[] = {"Marcita", "Lovely", "Essence",
 int main() {
 	if (startMenu(&character)) {
 		makeCharacter(&character);
-		character.coins = 15;
 	}
 
 	mainMenu();
