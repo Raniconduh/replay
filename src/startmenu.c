@@ -39,13 +39,10 @@ int searchSaves() {
 		}
 	}
 
-	if (saves > 0) {
+	if (saves > 0)
 		return 0;
-	} else {
-		return 1;
-	}
 
-	return 0;
+	return 1;
 }
 
 
@@ -140,7 +137,8 @@ startMenuLabel:
 	// Load an existing save
 	if (!strncmp(userInput, "1", 1)) {
 		// get $HOME environment variable
-		char * home = calloc(sizeof(char) * (strlen(getenv("HOME")) + strlen("/.config/replay") + 35), 1);
+		char * home = malloc(sizeof(char) * (strlen(getenv("HOME"))
+					+ strlen("/.config/replay") + 35));
 		strcpy(home, getenv("HOME"));
 		strcat(home, "/.config/replay");
 
@@ -180,7 +178,7 @@ startMenuLabel:
 			scanf("%s", userInput);
 			
 			// convert i to string to compare user input to it
-			char * stringi = calloc((sizeof(i) + 15) * sizeof(char), 1);
+			char * stringi = malloc((sizeof(i) + 15) * sizeof(char));
 			snprintf(stringi, sizeof(i), "%ld", i);
 
 			// if user chooses exit option
@@ -193,6 +191,7 @@ startMenuLabel:
 
 				goto startMenuLabel;
 			}
+			free(stringi);
 
 			intInput = strtoull(userInput, NULL, 10);
 			// invalid input entered
@@ -203,9 +202,7 @@ startMenuLabel:
 				
 				free(userInput);
 				free(home);
-				free(stringi);
 				free(saveFiles);
-
 				closedir(dir);
 
 				goto startMenuLabel;
@@ -213,10 +210,8 @@ startMenuLabel:
 
 			if (!loadSave(saveFiles[intInput - 1], character)) {
 				free(userInput);
-				free(stringi);
 				free(saveFiles);
 				free(home);
-
 				closedir(dir);
 
 				return 0;
@@ -224,9 +219,7 @@ startMenuLabel:
 			
 			free(userInput);
 			free(home);
-			free(stringi);
 			free(saveFiles);
-
 			closedir(dir);
 
 			goto startMenuLabel;
