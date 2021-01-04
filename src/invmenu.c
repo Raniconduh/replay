@@ -43,8 +43,15 @@ invLabel:
 		goto invLabel;
 	}
 
+
+	// check if input is higher than last index in inventory
+	// this prevents seg fault
+	if (intInput > arrlen(inventoryOptions)) {
+		printf("%s%sBad input.%s\n",
+				CLEAR, PURPLE, RESET);
+
 	// health potion option is chosen
-	if (!strcmp(inventoryOptions[intInput - 1], "Health Potion")) {
+	} else if (!strcmp(inventoryOptions[intInput - 1], "Health Potion")) {
 		// if there are no health potions
 		if (inventoryCount[intInput - 1] < 1) {
 			printf("%s%sYou have no Health Potions.%s\n", 
@@ -67,27 +74,15 @@ invLabel:
 				character->health = character->totalHealth:0;
 		}
 
-		// these lines of code are put here since they
-		// otherwise would have been repeated
-		sleep(1);
-		free(userInput);
-		goto invLabel;
-
 	// a non-usuable or bad input was chosen
 	} else {
-		free(userInput);
-
 		printf("%s%sYou cannot use this item.%s\n",
 				CLEAR, PURPLE, RESET);
-
-		sleep(1);
-
-		goto invLabel;
 	}
 
-	// realistically these loc will not be executed
-	// gotos and returns above forbid this
+	sleep(1);
 	free(userInput);
+	goto invLabel;
 
 	return 0;
 }
