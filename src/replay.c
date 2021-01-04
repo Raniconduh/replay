@@ -83,8 +83,8 @@ int mainMenu() {
 
 		// User input line
 		printf("%s>>>%s ", YELLOW, RESET);
-		char * userInput = malloc(3);
-		scanf("%s", userInput);
+		char * userInput = malloc(sizeof(char) * 3);
+		fgets(userInput, 2, stdin);
 
 		if (!strncmp(userInput, "1", 1)) {
 			free(userInput);
