@@ -27,8 +27,8 @@ int searchSaves() {
 	// assign dirContents to file being read by readdir()
 	// while the file being read exists
 	while ((dirContents = readdir(dir)) != NULL) {
-		// if file name is not . nor ..
-		if (strcmp(dirContents->d_name, ".") && strcmp(dirContents->d_name, "..")) {
+		// if file name is not . nor .. nor any dotfile
+		if (dirContents->d_name[0] != '.') {
 			// add save file name to saveFiles array at index saves
 			saveFiles[saves] = dirContents->d_name;
 			// increment saves to show number of save files found
@@ -192,34 +192,14 @@ startMenuLabel:
 				closedir(dir);
 
 				goto startMenuLabel;
-			} else {
-				intInput = strtoull(userInput, NULL, 10);
-				// invalid input entered
-				if (intInput == 0 || intInput > saves) {
-					printf("%s%sError: Invalid Input. Retrying...%s\n",
-							CLEAR, RED, RESET);
-					sleep(1);
-					
-					free(userInput);
-					free(home);
-					free(stringi);
-					free(saveFiles);
+			}
 
-					closedir(dir);
-
-					goto startMenuLabel;
-				} // else {
-
-				if (!loadSave(saveFiles[intInput - 1], character)) {
-					free(userInput);
-					free(stringi);
-					free(saveFiles);
-					free(home);
-
-					closedir(dir);
-
-					return 0;
-				}
+			intInput = strtoull(userInput, NULL, 10);
+			// invalid input entered
+			if (intInput == 0 || intInput > saves) {
+				printf("%s%sError: Invalid Input. Retrying...%s\n",
+						CLEAR, RED, RESET);
+				sleep(1);
 				
 				free(userInput);
 				free(home);
@@ -229,10 +209,28 @@ startMenuLabel:
 				closedir(dir);
 
 				goto startMenuLabel;
-
-				//}
-
 			}
+
+			if (!loadSave(saveFiles[intInput - 1], character)) {
+				free(userInput);
+				free(stringi);
+				free(saveFiles);
+				free(home);
+
+				closedir(dir);
+
+				return 0;
+			}
+			
+			free(userInput);
+			free(home);
+			free(stringi);
+			free(saveFiles);
+
+			closedir(dir);
+
+			goto startMenuLabel;
+
 
 		// Directory does not exist
 		} else if (ENOENT == errno) {
