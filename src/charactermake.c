@@ -131,7 +131,7 @@ saveInputLabel:
 
 	// if user selected save file already exists
 	if (makeSave(saveInput, character, 1)) {
-		printf("%s%sError: This file already exists.%s\n", CLEAR, RED, RESET);
+		printf("%s%sWarning: This file already exists.%s\n", CLEAR, RED, RESET);
 		printf("%sWould you like to delete and overwrite the save file?%s\n\n",
 				PURPLE, RESET);
 		
