@@ -4,8 +4,7 @@ A command line RPG
 
 ## TODO - Ranked by Priotity
 1. Fix Cost of Things, Damage Done, etc.
-2. Add More Healer Names
-3. Add More Inventory and Shop Items
+2. Add More Inventory and Shop Items
 3. Add ASCII Art for Fights in Dungeon
 
 ## Bugs
