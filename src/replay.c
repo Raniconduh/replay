@@ -82,32 +82,32 @@ int mainMenu() {
 		printf("  3. Enter Inventory\n\n");
 
 		printf("  4. Save Game\n");
-		printf("  5. Quit Game%s\n\n", RESET);
+		printf("  q. Quit Game%s\n\n", RESET);
 
 		// User input line
 		printf("%s>>>%s ", YELLOW, RESET);
 		char * userInput = malloc(sizeof(char) * 3);
 		fgets(userInput, 2, stdin);
 
-		if (!strncmp(userInput, "1", 1)) {
+		if (userInput[0] == '1') {
 			free(userInput);
 			dungeon(&character);
 
-		} else if (!strncmp(userInput, "2", 1)) {
+		} else if (userInput[0] == '2') {
 			free(userInput);
 			shop(&character);
 
-		} else if (!strncmp(userInput, "3", 1)) {
+		} else if (userInput[0] == '3') {
 			free(userInput);
 			invMenu(&character);
 
-		} else if (!strncmp(userInput, "4", 1)) {
+		} else if (userInput[0] == '4') {
 			free(userInput);
 			saveGame(&character);
 			printf("%s%sSaving...%s\n", CLEAR, PURPLE, RESET);
 			sleep(1);
 
-		} else if (!strncmp(userInput, "5", 1)) {
+		} else if (userInput[0] == 'q') {
 			free(userInput);
 			exit(0);
 

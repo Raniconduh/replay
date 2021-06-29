@@ -14,7 +14,7 @@ int shop(playerCharacter * character) {
 				CYAN, YELLOW, CYAN);
 		printf("  2. Sell Flesh - %s5%s Coins Each\n",
 				YELLOW, CYAN);
-		printf("  3. Exit%s\n\n", RESET);
+		printf("  q. Exit%s\n\n", RESET);
 
 		printf("%s>>>%s ", YELLOW, RESET);
 
@@ -22,7 +22,7 @@ int shop(playerCharacter * character) {
 		scanf("%s", userInput);
 		
 		// If user chooses 1st input
-		if (!strncmp(userInput, "1", 1)) {
+		if (userInput[0] == '1') {
 			// If user has enough coins
 			if ((long long)character->coins >= 10) {
 				printf("%s%sSuccessfully bought 1 Health Potion.\n", 
@@ -48,7 +48,7 @@ int shop(playerCharacter * character) {
 			}
 
 		// If user chooses 2nd option
-		} else if (!strncmp(userInput, "2", 1)) {
+		} else if (userInput[0] == '2') {
 			// If user has enough flesh (more than 0)
 			if (inventoryCount[1] > 0) {
 				printf("%s%sSuccessfully sold 1 Flesh.\n",
@@ -72,8 +72,8 @@ int shop(playerCharacter * character) {
 				sleep(1);
 			}
 
-		// If user chooses 3rd option
-		} else if (!strncmp(userInput, "3", 1)) {
+		// If usee chososes to exit shop
+		} else if (userInput[0] == 'q') {
 			free(userInput);
 
 			// quit immediatly

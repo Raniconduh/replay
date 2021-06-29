@@ -66,11 +66,11 @@ input:
 		scanf("%s", userInput);
 
 		// User turn and User enter attack
-		if (!strncmp(userInput, "1", 1)) {
+		if (userInput[0] == '1') {
 			playerAttack(&enemy, damageDeviation, character);
 		
 		// If use item menu is chosen
-		}  else if (!strncmp(userInput, "2", 1)) {
+		}  else if (userInput[0] == '2') {
 			// if useItem return 1,
 			// then user input was incorrect
 			// and or user chose to exit use item menu
@@ -80,7 +80,7 @@ input:
 			}
 
 		// if runaway option is chosen
-		} else if (!strncmp(userInput, "3", 1)) {
+		} else if (userInput[0] == '3') {
 			// if return vaue of tryRunAway is 0,
 			// then running away is succesful and dungeon
 			// should be exited
@@ -208,7 +208,7 @@ int useItem(playerCharacter * character) {
 		scanf("%s", userInput);
 
 		// if option 1 is chosen
-		if (!strncmp(userInput, "1", 1)) {
+		if (!strcmp(userInput, "1")) {
 			// if item 1 is available in the inventory (greater than 0)
 			if (inventoryCount[0] >= 1) {
 				if (character->health < character->totalHealth - 15) {
@@ -239,7 +239,7 @@ int useItem(playerCharacter * character) {
 				free(userInput);
 				return 1;
 			}
-		} else if (!strncmp(userInput, "2", 1)) {
+		} else if (!strcmp(userInput, "2")) {
 
 			free(userInput);
 			return 1;

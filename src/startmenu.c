@@ -128,14 +128,14 @@ startMenuLabel:
 
 	printf("%s  1. Load Save\n", CYAN);
 	printf("  2. Create New Save\n");
-	printf("  3. Quit Game%s\n\n", RESET);
+	printf("  q. Quit Game%s\n\n", RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
 	char * userInput = malloc(sizeof(char) * 10);
 	scanf("%s", userInput);
 
 	// Load an existing save
-	if (!strncmp(userInput, "1", 1)) {
+	if (userInput[0] == '1') {
 		// get $HOME environment variable
 		char * home = malloc(sizeof(char) * (strlen(getenv("HOME"))
 					+ strlen("/.config/replay") + 35));
@@ -170,28 +170,21 @@ startMenuLabel:
 				printf("%s  %ld. %s%s\n", CYAN, i, saveFiles[i-1], RESET);
 			}
 
-			// print i with exit option
-			// i will be 1 more than highest save option
-			printf("%s  %ld. Exit%s\n\n", CYAN, i, RESET);
+			// exit option
+			printf("%s  q. Exit%s\n\n", CYAN, RESET);
 
 			printf("%s>>>%s ", YELLOW, RESET);
 			scanf("%s", userInput);
 			
-			// convert i to string to compare user input to it
-			char * stringi = malloc((sizeof(i) + 15) * sizeof(char));
-			snprintf(stringi, sizeof(i), "%ld", i);
-
 			// if user chooses exit option
-			if (!strncmp(userInput, stringi, 1)) {
+			if (userInput[0] == 'q') {
 				free(home);
-				free(stringi);
 				free(saveFiles);
 				free(userInput);
 				closedir(dir);
 
 				goto startMenuLabel;
 			}
-			free(stringi);
 
 			intInput = strtoull(userInput, NULL, 10);
 			// invalid input entered
@@ -248,11 +241,11 @@ startMenuLabel:
 		}
 
 	// Make a new save
-	} else if (!strncmp(userInput, "2", 1)) {
+	} else if (userInput[0] == '2') {
 		free(userInput);
 
 		return 1;
-	} else if (!strncmp(userInput, "3", 1)) {
+	} else if (userInput[0] == 'q') {
 		free(userInput);
 
 		exit(0);

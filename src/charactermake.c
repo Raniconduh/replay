@@ -54,21 +54,21 @@ makeCharacterLabel:
 
 	// Compare user input with all available options
 	// warrior option is chosen
-	if (!strcmp(userInput, "1")) {
+	if (userInput[0] == '1') {
 		character->class = "Warrior";
 		character->health = 100;
 		character->totalHealth = 100;
 		character->damage = 15;
 
 	// mage option is chosen
-	} else if (!strcmp(userInput, "2")) {
+	} else if (userInput[0] == '2') {
 		character->class = "Mage";
 		character->health = 50;
 		character->totalHealth = 50;
 		character->damage = 25;
 
 	// archer option is chosen
-	} else if (!strcmp(userInput, "3")) {
+	} else if (userInput[0] == '3') {
 		character->class = "Archer";
 		character->health = 75;
 		character->totalHealth = 75;
@@ -100,7 +100,7 @@ makeCharacterLabel:
 
 
 	// If user enters no and wouuld like to retry
-	if (!strncmp(userInput, "n", 1) || !strncmp(userInput, "N", 1)) {
+	if (userInput[0] == 'n' || userInput[0] == 'N') {
 		printf("%s%sOk. Retrying...%s\n", CLEAR, RED, RESET);
 
 		sleep(1);
@@ -138,7 +138,7 @@ saveInputLabel:
 		printf("%s[Y/n] :%s ", YELLOW, RESET);
 		scanf("%s", userInput);
 
-		if (!strncmp(userInput, "y", 1) || !strncmp(userInput, "Y", 1)) {
+		if (userInput[0] == 'y' || userInput[0] == 'Y') {
 			makeSave(saveInput, character, 0);	
 		} else {
 			free(saveInput);

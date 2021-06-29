@@ -14,26 +14,18 @@ invLabel:
 		printf("%s%ld%s\n", YELLOW, inventoryCount[i], RESET);
 	}
 
-	printf("%s  %ld. Exit%s\n\n", CYAN, arrlen(inventoryOptions) + 1, RESET);
+	printf("%s  q. Exit%s\n\n", CYAN, RESET);
 
 	printf("%s>>>%s ", YELLOW, RESET);
 	char * userInput = malloc(sizeof(char) * 5);
 	scanf("%s", userInput);
 
-	// exitNumber is the number at which the exit option
-	// in the inventory menu is found (it changes depending on number of
-	// the items in the inventory)
-	char * exitNumber = malloc(arrlen(inventoryCount) * sizeof(int));
-	sprintf(exitNumber, "%ld", arrlen(inventoryCount) + 1);
-
 	// if the exit option is chosen
-	if (!strcmp(userInput, exitNumber)) {
+	if (userInput[0] == 'q') {
 		free(userInput);
-		free(exitNumber);
 
 		return 0;
 	}
-	free(exitNumber);
 
 	// user input as an integer
 	// needs to be subtracted 1 if used as an index
