@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #define arrlen(array) sizeof(array) / sizeof(array[0])
 
 

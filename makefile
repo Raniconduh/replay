@@ -1,13 +1,15 @@
-CFLAGS = $(shell xml2-config --cflags)
+INCLUDEDIR = include
+CFLAGS = $(shell xml2-config --cflags) -Wall -Wextra -I$(INCLUDEDIR)
 LIBS = $(shell xml2-config --libs)
+SOURCES = src/*.c
 
 default: replay
 
-replay: src/replay.c src/invmenu.c src/shopmenu.c src/dungeon.c src/charactermake.c src/replay.h src/startmenu.c
-	gcc -o replay $(CFLAGS) -Wall -Wextra src/startmenu.c src/replay.c src/invmenu.c src/shopmenu.c src/dungeon.c src/charactermake.c $(LIBS)
+replay: $(SOURCES)
+	gcc -o replay $(CFLAGS) $(SOURCES) $(LIBS)
 
-debug: src/replay.c src/charactermake.c src/dungeon.c src/invmenu.c src/shopmenu.c src/startmenu.c src/replay.h
-	gcc -o replay $(CFLAGS) -Wall -Wextra -g -DDEBUG src/startmenu.c src/replay.c src/invmenu.c src/shopmenu.c src/dungeon.c src/charactermake.c $(LIBS)
+debug: $(SOURCES)
+	gcc -o replay $(CFLAGS) -g -DDEBUG $(SOURCES) $(LIBS)
 
 clean:
 	$(RM) replay
